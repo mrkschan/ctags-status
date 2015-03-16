@@ -1,3 +1,4 @@
+Ctags = require './ctags'
 CtagsStatusView = require './ctags-status-view'
 {CompositeDisposable} = require 'atom'
 
@@ -7,6 +8,7 @@ module.exports = CtagsStatus =
   subscriptions: null
 
   activate: (state) ->
+    @ctags = new Ctags
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
     @modalPanel = atom.workspace.addModalPanel(item: @ctagsStatusView.getElement(), visible: false)
 
@@ -27,7 +29,11 @@ module.exports = CtagsStatus =
   toggle: ->
     console.log 'CtagsStatus was toggled!'
 
+    editor = atom.workspace.getActiveTextEditor()
+    path = editor.getPath()
+
     if @modalPanel.isVisible()
       @modalPanel.hide()
     else
       @modalPanel.show()
+      @ctags.generateTagFile path
