@@ -32,8 +32,15 @@ module.exports = CtagsStatus =
     editor = atom.workspace.getActiveTextEditor()
     path = editor.getPath()
 
+    success_cb = (tags) ->
+      for [tag, type, lineno] in tags
+        console.log lineno, tag, type
+
+    error_cb = (text) ->
+      console.log text
+
     if @modalPanel.isVisible()
       @modalPanel.hide()
     else
       @modalPanel.show()
-      @ctags.generateTagFile path
+      @ctags.getTags path, success_cb, error_cb

@@ -3,22 +3,33 @@
 
 module.exports =
 class Ctags
-    generateTagFile: (@path) ->
+    parseTags: (lines) ->
+        parse = (line) ->
+            line = line.trim()
+            if line == ''
+                return []
+
+            parts = line.split '\t'
+            [tag, path, snippet, type, lineno] = parts
+            [tag, type, lineno]
+
+        tags = (parse line for line in lines.split '\n')
+        (tag for tag in tags when tag.length > 0)
+
+    getTags: (path, success_cb, error_cb) ->
         presets = require.resolve('./.ctagsrc')
 
         command = 'ctags'
 
         args = []
         args.push("--options=#{presets}", '--fields=+KSn', '--excmd=p')
-        args.push('-R', '-f', '-', @path)
+        args.push('-R', '-f', '-', path)
 
-        stdout = (lines) ->
-            console.log lines
+        stdout = (lines) =>
+            tags = this.parseTags lines
+            success_cb tags
 
-        stderr = (lines) ->
-            console.log lines
+        stderr = (lines) =>
+            error_cb lines
 
-        exit = (code) ->
-            console.log code
-
-        subprocess = new BufferedProcess({command, args, stdout, stderr, exit})
+        subprocess = new BufferedProcess({command, args, stdout, stderr})
