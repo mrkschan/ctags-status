@@ -11,6 +11,9 @@ class Ctags
 
             parts = line.split '\t'
             [tag, path, snippet, type, lineno] = parts
+            lineno = lineno.replace 'line:', ''
+            lineno = parseInt lineno, 10
+
             [tag, type, lineno]
 
         tags = (parse line for line in lines.split '\n')
