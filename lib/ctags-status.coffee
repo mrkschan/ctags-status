@@ -54,19 +54,12 @@ module.exports = CtagsStatus =
     pos = editor.getCursorBufferPosition()
     thisLine = pos.row + 1
 
-    success_cb = (tags) =>
-      # tags: [[tag, type, lineno], ...]
-      sorter = (x, y) ->
-        return x[2] > y[2]  # Sort lineno by asc order
-      tags.sort(sorter)
-
+    findTag = (tags) =>
+      # tags: [[tag, type, lineno], ...], sorted by lineno ASC
       # FIXME: Support nested Ctag by looking at indentation
       parents = (tag for [tag, type, lineno] in tags when lineno <= thisLine)
       parent = parents[-1..][0]
 
       @ctagsStatusView.getElement().textContent = parent
 
-    error_cb = (text) =>
-      console.log text
-
-    @ctags.getTags path, success_cb, error_cb
+    @ctags.getTags path, findTag

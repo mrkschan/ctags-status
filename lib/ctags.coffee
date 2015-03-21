@@ -1,8 +1,12 @@
 {BufferedProcess} = require 'atom'
-
+Q = require 'q'
 
 module.exports =
 class Ctags
+    constructor: ->
+        # TODO: Adopt Least-recently-used Cache
+        @cache = {}
+
     parseTags: (lines) ->
         parse = (line) ->
             line = line.trim()
@@ -19,7 +23,7 @@ class Ctags
         tags = (parse line for line in lines.split '\n')
         (tag for tag in tags when tag.length > 0)
 
-    getTags: (path, success_cb, error_cb) ->
+    generateTags: (path) ->
         presets = require.resolve('./.ctagsrc')
 
         command = 'ctags'
@@ -29,10 +33,31 @@ class Ctags
         args.push('-R', '-f', '-', path)
 
         stdout = (lines) =>
+            sorter = (x, y) ->
+                [xtag, xtype, xlineno] = x
+                [ytag, ytype, ylineno] = y
+                return xlineno > ylineno  # Sort lineno by asc order
+
             tags = this.parseTags lines
-            success_cb tags
+            tags.sort(sorter)
+
+            @cache[path] = tags
+            @deferred.resolve()
 
         stderr = (lines) =>
-            error_cb lines
+            console.warn lines
+            @deferred.reject()
 
         subprocess = new BufferedProcess({command, args, stdout, stderr})
+
+    getTags: (path, consumer) ->
+        @deferred = Q.defer([path])
+
+        @deferred.promise.then =>
+            tags = @cache[path]
+            consumer tags
+
+        if not @cache[path]?
+            @generateTags path
+        else
+            @deferred.resolve()
