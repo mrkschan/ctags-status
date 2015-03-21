@@ -2,7 +2,7 @@
 
 Show function name of the current line on the status bar.
 
-![A screenshot of ctags-status package](/docs/screenshot.png?raw=true)
+![A screenshot of ctags-status package](https://github.com/mrkschan/ctags-status/blob/master/docs/screenshot.png?raw=true)
 
 Inspired by VIM Tag List plugin.
 
