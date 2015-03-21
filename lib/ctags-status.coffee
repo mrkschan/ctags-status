@@ -12,12 +12,19 @@ module.exports = CtagsStatus =
 
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
+    @editor_subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
     @subscriptions.add atom.workspace.onDidChangeActivePaneItem =>
+      @unsubscribeLastActiveEditor()
+      @subscribeToActiveEditor()
       @toggle()
 
+    @subscribeToActiveEditor()
+
   deactivate: ->
+    @unsubscribeLastActiveEditor()
+
     @subscriptions.dispose()
     @ctagsStatusView.destroy()
 
@@ -27,9 +34,18 @@ module.exports = CtagsStatus =
   consumeStatusBar: (statusBar) ->
     @statusBar = statusBar.addLeftTile(item: @ctagsStatusView.getElement(), priority: 100)
 
-  toggle: ->
-    console.log 'CtagsStatus was toggled!'
+  subscribeToActiveEditor: ->
+    editor = atom.workspace.getActiveTextEditor()
+    if not editor?
+      return
 
+    @editor_subscriptions.add editor.onDidChangeCursorPosition =>
+      @toggle()
+
+  unsubscribeLastActiveEditor: ->
+    @editor_subscriptions.dispose()
+
+  toggle: ->
     editor = atom.workspace.getActiveTextEditor()
     if not editor?
       return
