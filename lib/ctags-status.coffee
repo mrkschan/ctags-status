@@ -14,7 +14,8 @@ module.exports = CtagsStatus =
     @subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'ctags-status:toggle': => @toggle()
+    @subscriptions.add atom.workspace.onDidChangeActivePaneItem =>
+      @toggle()
 
   deactivate: ->
     @subscriptions.dispose()
@@ -30,6 +31,9 @@ module.exports = CtagsStatus =
     console.log 'CtagsStatus was toggled!'
 
     editor = atom.workspace.getActiveTextEditor()
+    if not editor?
+      return
+
     path = editor.getPath()
     pos = editor.getCursorBufferPosition()
     thisLine = pos.row + 1
