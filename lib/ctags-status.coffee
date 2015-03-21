@@ -67,6 +67,6 @@ module.exports = CtagsStatus =
       if not parent?
         parent = 'global'
 
-      @ctagsStatusView.getElement().textContent = parent
+      @ctagsStatusView.getElement().textContent = "[#{parent}]"
 
     @ctags.getTags path, findTag, refresh_tags

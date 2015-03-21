@@ -2,8 +2,8 @@ module.exports =
 class CtagsStatusView
   constructor: (serializeState) ->
     # Create root element
-    @element = document.createElement('span')
-    @element.classList.add('ctags-status')
+    @element = document.createElement('div')
+    @element.classList.add('ctags-status', 'func-info', 'inline-block')
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
