@@ -1,5 +1,33 @@
 # ctags-status package
 
-A short description of your package.
+Show function name of the current line on the status bar.
 
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+![A screenshot of ctags-status package](/docs/screenshot.png?raw=true)
+
+Inspired by VIM Tag List plugin.
+
+
+# Dependency
+
+## Ubuntu / Debian
+
+```
+sudo apt-get install exuberant-ctags
+```
+
+## Red Hat / Fedora / CentOS
+
+```
+sudo yum install ctags
+```
+
+## OS X
+
+```
+brew install ctags
+```
+
+## Windows
+
+1. Download CTags binary from http://prdownloads.sourceforge.net/ctags/ctags58.zip.
+2. Unzip the binary to anywhere that can be located by your PATH.
