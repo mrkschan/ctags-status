@@ -21,6 +21,7 @@ module.exports = CtagsStatus =
       @toggle()
 
     @subscribeToActiveEditor()
+    @toggle()
 
   deactivate: ->
     @unsubscribeLastActiveEditor()
