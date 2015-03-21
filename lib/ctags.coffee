@@ -50,14 +50,14 @@ class Ctags
 
         subprocess = new BufferedProcess({command, args, stdout, stderr})
 
-    getTags: (path, consumer) ->
+    getTags: (path, consumer, force=false) ->
         @deferred = Q.defer([path])
 
         @deferred.promise.then =>
             tags = @cache[path]
             consumer tags
 
-        if not @cache[path]?
+        if force or not @cache[path]?
             @generateTags path
         else
             @deferred.resolve()

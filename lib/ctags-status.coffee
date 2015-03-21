@@ -42,10 +42,13 @@ module.exports = CtagsStatus =
     @editor_subscriptions.add editor.onDidChangeCursorPosition =>
       @toggle()
 
+    @editor_subscriptions.add editor.onDidSave =>
+      @toggle(true)
+
   unsubscribeLastActiveEditor: ->
     @editor_subscriptions.dispose()
 
-  toggle: ->
+  toggle: (refresh_tags=false) ->
     editor = atom.workspace.getActiveTextEditor()
     if not editor?
       return
@@ -62,4 +65,4 @@ module.exports = CtagsStatus =
 
       @ctagsStatusView.getElement().textContent = parent
 
-    @ctags.getTags path, findTag
+    @ctags.getTags path, findTag, refresh_tags
