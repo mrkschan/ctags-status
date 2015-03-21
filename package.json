@@ -3,9 +3,6 @@
   "main": "./lib/ctags-status",
   "version": "0.0.0",
   "description": "A short description of your package",
-  "activationCommands": {
-    "atom-workspace": "ctags-status:toggle"
-  },
   "repository": "https://github.com/atom/ctags-status",
   "license": "MIT",
   "engines": {
