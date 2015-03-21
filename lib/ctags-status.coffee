@@ -64,6 +64,9 @@ module.exports = CtagsStatus =
       parents = (tag for [tag, type, lineno] in tags when lineno <= thisLine)
       parent = parents[-1..][0]
 
+      if not parent?
+        parent = 'global'
+
       @ctagsStatusView.getElement().textContent = parent
 
     @ctags.getTags path, findTag, refresh_tags
