@@ -52,6 +52,7 @@ module.exports = CtagsStatus =
   toggle: (refresh_tags=false) ->
     editor = atom.workspace.getActiveTextEditor()
     if not editor?
+      @ctagsStatusView.getElement().textContent = ''
       return
 
     path = editor.getPath()
