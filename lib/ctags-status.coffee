@@ -56,17 +56,43 @@ module.exports = CtagsStatus =
       return
 
     path = editor.getPath()
-    pos = editor.getCursorBufferPosition()
-    thisLine = pos.row + 1
+    current = editor.getCursorBufferPosition()
 
     findTag = (tags) =>
-      # tags: [[tag, type, lineno], ...], sorted by lineno ASC
-      # FIXME: Support nested Ctag by looking at indentation
-      parents = (tag for [tag, type, lineno] in tags when lineno <= thisLine)
-      parent = parents[-1..][0]
+      getIndent = (text) ->
+        # FIXME: Respect current indentation settings of Atom
+        text = text.replace(/^(\s*)(.*)/, '$1')
+        text.length
 
-      if not parent?
-        parent = 'global'
+      findParent = (parents) ->
+        tagClosed = (lineno, tag_indent) ->
+          if lineno == current.row
+            return false
+
+          closed = false
+          for i in [lineno + 1..current.row] when not closed
+            text = editor.lineTextForBufferRow i
+            indent = getIndent text
+
+            if indent == tag_indent
+              closed = true
+
+          return closed
+
+        for [tag, type, lineno] in tags  # Already sorted by lineno DESC
+          if lineno > current.row
+            continue  # Tag later than current row would never be parent
+
+          text = editor.lineTextForBufferRow lineno
+          tag_indent = getIndent(text)
+
+          if tagClosed(lineno, tag_indent)
+            continue  # Tag already closed would never be parent
+
+          return tag
+
+      parent = findParent tags
+      parent = if not parent? then 'global' else parent
 
       @ctagsStatusView.getElement().textContent = "[#{parent}]"
 

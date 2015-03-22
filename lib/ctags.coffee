@@ -17,6 +17,7 @@ class Ctags
             [tag, path, snippet, type, lineno] = parts
             lineno = lineno.replace 'line:', ''
             lineno = parseInt lineno, 10
+            lineno = lineno - 1  # Use zero based
 
             [tag, type, lineno]
 
@@ -34,7 +35,7 @@ class Ctags
 
         stdout = (lines) =>
             tags = this.parseTags lines
-            tags.sort((x, y) -> x[2] - y[2])  # Sort lineno by asc order
+            tags.sort((x, y) -> y[2] - x[2])  # Sort lineno by desc order
 
             @cache[path] = tags
             @deferred.resolve()
