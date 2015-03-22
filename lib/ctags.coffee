@@ -33,13 +33,8 @@ class Ctags
         args.push('-R', '-f', '-', path)
 
         stdout = (lines) =>
-            sorter = (x, y) ->
-                [xtag, xtype, xlineno] = x
-                [ytag, ytype, ylineno] = y
-                return xlineno > ylineno  # Sort lineno by asc order
-
             tags = this.parseTags lines
-            tags.sort(sorter)
+            tags.sort((x, y) -> x[2] - y[2])  # Sort lineno by asc order
 
             @cache[path] = tags
             @deferred.resolve()
