@@ -7,6 +7,7 @@ module.exports = CtagsStatus =
   subscriptions: null
 
   activate: (state) ->
+    @finder = require './scope-finder'
     @ctags = new Ctags
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
 
@@ -49,51 +50,18 @@ module.exports = CtagsStatus =
   unsubscribeLastActiveEditor: ->
     @editor_subscriptions.dispose()
 
-  toggle: (refresh_tags=false) ->
+  toggle: (refresh=false) ->
     editor = atom.workspace.getActiveTextEditor()
     if not editor?
       @ctagsStatusView.setText ''
       return
 
     path = editor.getPath()
-    current = editor.getCursorBufferPosition()
 
     findTag = (tags) =>
-      getIndent = (text) ->
-        # FIXME: Respect current indentation settings of Atom
-        text = text.replace(/^(\s*)(.*)/, '$1')
-        text.length
-
-      findParent = (parents) ->
-        tagClosed = (lineno, tag_indent) ->
-          if lineno == current.row
-            return false
-
-          closed = false
-          for i in [lineno + 1..current.row] when not closed
-            text = editor.lineTextForBufferRow i
-            indent = getIndent text
-
-            if indent == tag_indent
-              closed = true
-
-          return closed
-
-        for [tag, type, lineno] in tags  # Already sorted by lineno DESC
-          if lineno > current.row
-            continue  # Tag later than current row would never be parent
-
-          text = editor.lineTextForBufferRow lineno
-          tag_indent = getIndent(text)
-
-          if tagClosed(lineno, tag_indent)
-            continue  # Tag already closed would never be parent
-
-          return tag
-
-      parent = findParent tags
+      parent = @finder.find tags
       parent = if not parent? then 'global' else parent
 
       @ctagsStatusView.setText parent
 
-    @ctags.getTags path, findTag, refresh_tags
+    @ctags.getTags path, findTag, refresh
