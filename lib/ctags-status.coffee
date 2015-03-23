@@ -11,7 +11,6 @@ module.exports = CtagsStatus =
     @ctags = new Ctags
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
 
-    # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
     @editor_subscriptions = new CompositeDisposable
 
@@ -34,7 +33,8 @@ module.exports = CtagsStatus =
     ctagsStatusViewState: @ctagsStatusView.serialize()
 
   consumeStatusBar: (statusBar) ->
-    @statusBar = statusBar.addLeftTile(item: @ctagsStatusView.getElement(), priority: 100)
+    @statusBar = statusBar.addLeftTile(item: @ctagsStatusView.getElement(),
+                                       priority: 100)
 
   subscribeToActiveEditor: ->
     editor = atom.workspace.getActiveTextEditor()
