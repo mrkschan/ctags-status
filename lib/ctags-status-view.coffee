@@ -16,4 +16,7 @@ class CtagsStatusView
     @element
 
   setText: (text)  ->
-    @element.textContent = "[#{text}]"
+    if text == ''
+      @element.textContent = ''
+    else
+      @element.textContent = "[#{text}]"
