@@ -7,3 +7,6 @@
 * Use indentation + proximity to find parent tag :)
 * Still no config available yet :P
 * And, bug fix in sorting the tags :P
+
+## 1.0.1
+* Prevent using blank line to find closed tag
