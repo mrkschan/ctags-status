@@ -12,6 +12,9 @@ tagClosed = (editor, current, lineno, tag_indent) ->
   closed = false
   for i in [lineno + 1..current.row] when not closed
     text = editor.lineTextForBufferRow i
+    if text == ''
+      continue  # Blank line should not be used for finding closed tag
+
     indent = getIndent text
 
     if indent == tag_indent
