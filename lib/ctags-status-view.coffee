@@ -14,3 +14,6 @@ class CtagsStatusView
 
   getElement: ->
     @element
+
+  setText: (text)  ->
+    @element.textContent = "[#{text}]"

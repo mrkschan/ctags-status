@@ -52,7 +52,7 @@ module.exports = CtagsStatus =
   toggle: (refresh_tags=false) ->
     editor = atom.workspace.getActiveTextEditor()
     if not editor?
-      @ctagsStatusView.getElement().textContent = ''
+      @ctagsStatusView.setText ''
       return
 
     path = editor.getPath()
@@ -94,6 +94,6 @@ module.exports = CtagsStatus =
       parent = findParent tags
       parent = if not parent? then 'global' else parent
 
-      @ctagsStatusView.getElement().textContent = "[#{parent}]"
+      @ctagsStatusView.setText parent
 
     @ctags.getTags path, findTag, refresh_tags
