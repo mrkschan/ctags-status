@@ -10,3 +10,6 @@
 
 ## 1.0.1
 * Prevent using blank line to find closed tag
+
+## 1.0.2
+* Bug fix, blank scope should be supported
