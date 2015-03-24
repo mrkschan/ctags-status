@@ -7,6 +7,12 @@ Show function name of the current line on the status bar.
 Inspired by VIM Tag List plugin.
 
 
+# Tested languages
+
+* Coffeescript
+* Python
+
+
 # Dependency
 
 ## Ubuntu / Debian
