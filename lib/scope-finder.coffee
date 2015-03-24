@@ -27,9 +27,14 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     current = editor.getCursorBufferPosition()
 
+    ignored_types = ['variable']
+
     for [tag, type, lineno] in parents  # Already sorted by lineno DESC
       if lineno > current.row
         continue  # Tag later than current row would never be parent
+
+      if type in ignored_types
+        continue
 
       text = editor.lineTextForBufferRow lineno
       tag_indent = getIndent text
