@@ -13,3 +13,6 @@
 
 ## 1.0.2
 * Bug fix, blank scope should be supported
+
+## 1.0.3
+* Should ignore variable tag
