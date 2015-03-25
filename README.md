@@ -7,12 +7,6 @@ Show function name of the current line on the status bar.
 Inspired by VIM Tag List plugin.
 
 
-# Tested languages
-
-* Coffeescript
-* Python
-
-
 # Dependency
 
 ## Ubuntu / Debian
@@ -37,3 +31,10 @@ brew install ctags
 
 1. Download CTags binary from http://prdownloads.sourceforge.net/ctags/ctags58.zip.
 2. Unzip the binary to anywhere that can be located by your PATH.
+
+
+# Tested languages
+
+* Coffeescript
+* Go
+* Python
