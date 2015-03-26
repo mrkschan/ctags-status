@@ -16,3 +16,6 @@
 
 ## 1.0.3
 * Should ignore variable tag
+
+## 1.0.4
+* Added support for Javascript
