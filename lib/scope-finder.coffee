@@ -27,13 +27,13 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     current = editor.getCursorBufferPosition()
 
-    ignored_types = ['variable']
+    included_types = ['class', 'func', 'function']
 
     for [tag, type, lineno] in parents  # Already sorted by lineno DESC
       if lineno > current.row
         continue  # Tag later than current row would never be parent
 
-      if type in ignored_types
+      if type not in included_types
         continue
 
       text = editor.lineTextForBufferRow lineno
