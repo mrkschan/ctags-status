@@ -35,6 +35,7 @@ brew install ctags
 
 # Tested languages
 
+* C / C++
 * Coffeescript
 * Go
 * Java
