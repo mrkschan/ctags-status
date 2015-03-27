@@ -19,3 +19,6 @@
 
 ## 1.0.4
 * Added support for Javascript
+
+## 1.0.5
+* Prevent using open curly as close tag token
