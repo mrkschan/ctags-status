@@ -12,8 +12,10 @@ tagClosed = (editor, current, lineno, tag_indent) ->
   closed = false
   for i in [lineno + 1..current.row] when not closed
     text = editor.lineTextForBufferRow i
-    if text == ''
-      continue  # Blank line should not be used for finding closed tag
+    trimmed = text.trim()
+    if trimmed == '' or trimmed.replace(/^{/, '') == ''
+      # Blank line and open curly should not be used as closed tag
+      continue
 
     indent = getIndent text
 
