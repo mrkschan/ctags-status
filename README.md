@@ -42,3 +42,8 @@ brew install ctags
 * Javascript
 * Python
 * Ruby
+
+
+# Changelog
+
+https://github.com/mrkschan/ctags-status/blob/master/CHANGELOG.md
