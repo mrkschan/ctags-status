@@ -40,6 +40,7 @@ brew install ctags
 * Go
 * Java
 * Javascript
+* PHP
 * Python
 * Ruby
 
