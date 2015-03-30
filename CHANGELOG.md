@@ -1,3 +1,6 @@
+## 1.0.6
+* Bug fix, show member functions in Python
+
 ## 1.0.5
 * Prevent using open curly as close tag token
 
