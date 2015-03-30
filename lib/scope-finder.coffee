@@ -29,7 +29,7 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     current = editor.getCursorBufferPosition()
 
-    included_types = ['class', 'func', 'function']
+    included_types = ['class', 'func', 'function', 'member']
 
     for [tag, type, lineno] in parents  # Already sorted by lineno DESC
       if lineno > current.row
