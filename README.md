@@ -37,6 +37,7 @@ brew install ctags
 
 * C / C++
 * Coffeescript
+* CSS
 * Go
 * Java
 * Javascript
