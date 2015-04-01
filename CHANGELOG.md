@@ -1,3 +1,6 @@
+## 1.0.7
+* Use Q.delay(300) to prevent continuous toggling on cursor change event
+
 ## 1.0.6
 * Bug fix, show member functions in Python
 
