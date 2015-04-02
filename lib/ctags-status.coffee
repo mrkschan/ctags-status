@@ -43,7 +43,13 @@ module.exports = CtagsStatus =
     if not editor?
       return
 
-    @editor_subscriptions.add editor.onDidChangeCursorPosition =>
+    @editor_subscriptions.add editor.onDidChangeCursorPosition (evt) =>
+      last_pos = evt.oldBufferPosition
+      this_pos = evt.newBufferPosition
+
+      if last_pos.row == this_pos.row
+        return
+
       if @deferred? and @deferred.promise.isPending()
         @deferred.reject()
 
