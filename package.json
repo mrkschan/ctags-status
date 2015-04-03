@@ -1,7 +1,7 @@
 {
   "name": "ctags-status",
   "main": "./lib/ctags-status",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Show function name of the current line on the status bar",
   "repository": "https://github.com/mrkschan/ctags-status",
   "license": "MIT",
