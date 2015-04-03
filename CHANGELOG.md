@@ -1,3 +1,6 @@
+## 1.0.8
+* Enhanced the mechanism that prevents continuous toggling on consecutive cursor change event
+
 ## 1.0.7
 * Use Q.delay(300) to prevent continuous toggling on cursor change event
 
