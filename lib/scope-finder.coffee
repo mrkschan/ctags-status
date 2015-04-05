@@ -1,10 +1,5 @@
 require 'atom'
 
-getIndent = (text) ->
-  # FIXME: Respect current indentation settings of Atom
-  text = text.replace(/^(\s*)(.*)/, '$1')
-  text.length
-
 tagClosed = (editor, current, lineno, tag_indent) ->
   if lineno == current.row
     return false
@@ -17,7 +12,7 @@ tagClosed = (editor, current, lineno, tag_indent) ->
       # Blank line and open curly should not be used as closed tag
       continue
 
-    indent = getIndent text
+    indent = editor.indentationForBufferRow i
 
     if indent == tag_indent
       closed = true
@@ -39,7 +34,7 @@ module.exports =
         continue
 
       text = editor.lineTextForBufferRow lineno
-      tag_indent = getIndent text
+      tag_indent = editor.indentationForBufferRow lineno
 
       if tagClosed(editor, current, lineno, tag_indent)
         continue  # Tag already closed would never be parent
