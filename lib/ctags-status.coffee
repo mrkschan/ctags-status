@@ -9,9 +9,10 @@ module.exports = CtagsStatus =
   subscriptions: null
 
   activate: (state) ->
+    Cache = require './ctags-cache'
     @finder = require './scope-finder'
-    @cache = require './ctags-cache'
 
+    @cache = new Cache
     @ctags = new Ctags
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
 

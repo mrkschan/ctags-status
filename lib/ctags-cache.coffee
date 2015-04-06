@@ -1,10 +1,11 @@
 encode = (str) ->
   new Buffer(str, 'ascii').toString('hex')
 
-# TODO: Adopt Least-recently-used Cache
-cache = {}
+module.exports =
+class Cache
+  # TODO: Adopt Least-recently-used Cache
+  cache = {}
 
-module.exports = {
   add: (key, value) ->
     cache[encode(key)] = value
 
@@ -16,4 +17,3 @@ module.exports = {
 
   remove: (key) ->
     delete cache[encode(key)]
-}
