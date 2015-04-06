@@ -24,6 +24,11 @@ module.exports = CtagsStatus =
       @subscribeToActiveEditor()
       @toggle()
 
+    @subscriptions.add atom.workspace.observeTextEditors (editor) =>
+      disposable = editor.onDidDestroy =>
+        @cache.remove editor.getPath()
+        disposable.dispose()
+
     @subscribeToActiveEditor()
     @toggle()
 
