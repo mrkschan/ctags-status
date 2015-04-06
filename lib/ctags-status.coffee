@@ -10,6 +10,8 @@ module.exports = CtagsStatus =
 
   activate: (state) ->
     @finder = require './scope-finder'
+    @cache = require './ctags-cache'
+
     @ctags = new Ctags
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
 
@@ -74,10 +76,16 @@ module.exports = CtagsStatus =
 
     path = editor.getPath()
 
-    findTag = (tags) =>
+    findScope = (tags) =>
       parent = @finder.find tags
       parent = if not parent? then 'global' else parent
 
       @ctagsStatusView.setText parent
 
-    @ctags.getTags path, findTag, refresh
+    if refresh or not @cache.has path
+      @ctags.generateTags path, (tags) =>
+        @cache.add path, tags
+        findScope tags
+    else
+      tags = @cache.get path
+      findScope tags

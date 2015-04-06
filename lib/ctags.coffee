@@ -1,6 +1,5 @@
 {BufferedProcess} = require 'atom'
 Q = require 'q'
-cache = require './ctags-cache'
 
 module.exports =
 class Ctags
@@ -21,7 +20,7 @@ class Ctags
     tags = (parse line for line in lines.split '\n')
     (tag for tag in tags when tag.length > 0)
 
-  generateTags: (path) ->
+  generateTags: (path, callback) ->
     presets = require.resolve('./.ctagsrc')
 
     command = 'ctags'
@@ -31,26 +30,12 @@ class Ctags
     args.push('-R', '-f', '-', path)
 
     stdout = (lines) =>
-      tags = this.parseTags lines
+      tags = @parseTags lines
       tags.sort((x, y) -> y[2] - x[2])  # Sort lineno by desc order
 
-      cache.add path, tags
-      @deferred.resolve()
+      callback tags
 
-    stderr = (lines) =>
+    stderr = (lines) ->
       console.warn lines
-      @deferred.reject()
 
     subprocess = new BufferedProcess({command, args, stdout, stderr})
-
-  getTags: (path, consumer, force=false) ->
-    @deferred = Q.defer([path])
-
-    @deferred.promise.then ->
-      tags = cache.get path
-      consumer tags
-
-    if force or not cache.has path
-      @generateTags path
-    else
-      @deferred.resolve()
