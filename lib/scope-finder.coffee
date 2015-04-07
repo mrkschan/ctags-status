@@ -1,42 +1,44 @@
 require 'atom'
 
-tagClosed = (editor, current, lineno, tag_indent) ->
-  if lineno == current.row
-    return false
-
-  closed = false
-  for i in [lineno + 1..current.row] when not closed
-    text = editor.lineTextForBufferRow i
-    trimmed = text.trim()
-    if trimmed == '' or trimmed.replace(/^{/, '') == ''
-      # Blank line and open curly should not be used as closed tag
-      continue
-
-    indent = editor.indentationForBufferRow i
-
-    if indent == tag_indent
-      closed = true
-
-  return closed
-
 module.exports =
+  guessedTagEnd: (tagstart) ->
+    # Guess tag end line by assuming both start and end lines use same indent
+    editor = atom.workspace.getActiveTextEditor()
+    lastline = editor.getLastBufferRow()
+
+    tagindent = editor.indentationForBufferRow tagstart
+
+    ended = false
+    tagend = lastline
+    for i in [tagstart + 1..lastline] when not ended
+      text = editor.lineTextForBufferRow i
+      trimmed = text.trim()
+      if trimmed == '' or trimmed.replace(/^{/, '') == ''
+        # Blank line and open curly should not be considered as tag end line
+        continue
+
+      lineindent = editor.indentationForBufferRow i
+
+      if lineindent == tagindent
+        ended = true
+        if /^}/.test(trimmed)  # For languages using '}' to close a scope
+          tagend = i
+        else  # For languages using indentation to close a scope
+          tagend = i - 1
+
+    tagend
+
   find: (parents) ->
     editor = atom.workspace.getActiveTextEditor()
     current = editor.getCursorBufferPosition()
 
     included_types = ['class', 'func', 'function', 'member']
 
-    for [tag, type, lineno] in parents  # Already sorted by lineno DESC
-      if lineno > current.row
-        continue  # Tag later than current row would never be parent
-
+    for [tag, type, tagstart, tagend] in parents  # Sorted by tagstart DESC
       if type not in included_types
         continue
 
-      text = editor.lineTextForBufferRow lineno
-      tag_indent = editor.indentationForBufferRow lineno
+      if tagstart <= current.row and current.row <= tagend
+        return tag
 
-      if tagClosed(editor, current, lineno, tag_indent)
-        continue  # Tag already closed would never be parent
-
-      return tag
+    undefined

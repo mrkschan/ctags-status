@@ -90,6 +90,14 @@ module.exports = CtagsStatus =
 
     if refresh or not @cache.has path
       @ctags.generateTags path, (tags) =>
+        # (Tags, Type, Start Line) -> (Tags, Type, Start Line, End Line)
+        explode = (info) =>
+          [tag, type, tagstart] = info
+          tagend = @finder.guessedTagEnd(tagstart)
+          [tag, type, tagstart, tagend]
+
+        tags = (explode(info) for info in tags)
+
         @cache.add path, tags
         findScope tags
     else
