@@ -1,3 +1,8 @@
+## 1.0.9
+* CTag cache improvement
+* Scope finding improvement, using a O(N) algo
+* Respect Atom indentation settings
+
 ## 1.0.8
 * Enhanced the mechanism that prevents continuous toggling on consecutive cursor change event
 
