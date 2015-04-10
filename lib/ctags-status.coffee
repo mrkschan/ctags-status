@@ -1,7 +1,7 @@
 Ctags = require './ctags'
 CtagsStatusView = require './ctags-status-view'
 
-{CompositeDisposable, Task} = require 'atom'
+{CompositeDisposable} = require 'atom'
 Q = require 'q'
 
 module.exports = CtagsStatus =
@@ -58,15 +58,16 @@ module.exports = CtagsStatus =
       if last_pos.row == this_pos.row
         return
 
-      if @countdown?
-        @countdown.terminate()
+      if @deferred? and @deferred.promise.isPending()
+        @deferred.reject()
 
-      src = require.resolve('./countdown-handler.coffee')
-      @countdown = Task.once src, 30, =>
-        @countdown = undefined
+      @deferred = Q.defer()
 
-      @countdown.on 'finish', (data) =>
+      @deferred.promise.then =>
         @toggle()
+
+      Q.delay(300).then =>
+        @deferred.resolve()
 
     @editor_subscriptions.add editor.onDidSave =>
       @toggle(true)
