@@ -1,8 +1,6 @@
 Ctags = require './ctags'
 CtagsStatusView = require './ctags-status-view'
-
 {CompositeDisposable} = require 'atom'
-Q = require 'q'
 
 module.exports = CtagsStatus =
   ctagsStatusView: null
@@ -58,16 +56,7 @@ module.exports = CtagsStatus =
       if last_pos.row == this_pos.row
         return
 
-      if @deferred? and @deferred.promise.isPending()
-        @deferred.reject()
-
-      @deferred = Q.defer()
-
-      @deferred.promise.then =>
-        @toggle()
-
-      Q.delay(300).then =>
-        @deferred.resolve()
+      @toggle()
 
     @editor_subscriptions.add editor.onDidSave =>
       @toggle(true)
