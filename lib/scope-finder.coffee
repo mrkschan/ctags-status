@@ -28,17 +28,32 @@ module.exports =
 
     tagend
 
-  find: (parents) ->
+  buildScopeMap: (tags) ->
+    map = {}
+
+    for info in tags  # tags sorted by DESC
+      [tag, type, tagstart, tagend] = info
+      for i in [tagstart..tagend]
+        if not map[i]?
+          map[i] = []
+        map[i].push([tag, type])
+
+    map
+
+  find: (map) ->
     editor = atom.workspace.getActiveTextEditor()
     current = editor.getCursorBufferPosition()
 
     included_types = ['class', 'func', 'function', 'member']
 
-    for [tag, type, tagstart, tagend] in parents  # Sorted by tagstart DESC
+    scopes = map[current.row]
+    if not scopes?
+      return undefined
+
+    for [tag, type] in scopes  # Inner scope in the front
       if type not in included_types
         continue
 
-      if tagstart <= current.row and current.row <= tagend
-        return tag
+      return tag
 
     undefined

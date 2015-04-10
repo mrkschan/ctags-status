@@ -82,8 +82,8 @@ module.exports = CtagsStatus =
 
     path = editor.getPath()
 
-    findScope = (tags) =>
-      parent = @finder.find tags
+    findScope = (map) =>
+      parent = @finder.find map
       parent = if not parent? then 'global' else parent
 
       @ctagsStatusView.setText parent
@@ -98,8 +98,10 @@ module.exports = CtagsStatus =
 
         tags = (explode(info) for info in tags)
 
-        @cache.add path, tags
-        findScope tags
+        map = @finder.buildScopeMap(tags)
+
+        @cache.add path, map
+        findScope map
     else
-      tags = @cache.get path
-      findScope tags
+      map = @cache.get path
+      findScope map
