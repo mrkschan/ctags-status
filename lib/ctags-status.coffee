@@ -80,13 +80,26 @@ module.exports = CtagsStatus =
 
     if refresh or not @cache.has path
       @ctags.generateTags path, (tags) =>
-        # (Tags, Type, Start Line) -> (Tags, Type, Start Line, End Line)
-        explode = (info) =>
+        filter = (info) ->
+          # Ignore un-interested tags
+          # I/O: (Tags, Type, Start Line) -> (Tags, Start Line)
+          interested = ['class', 'func', 'function', 'member']
           [tag, type, tagstart] = info
-          tagend = @finder.guessedTagEnd(tagstart)
-          [tag, type, tagstart, tagend]
 
-        tags = (explode(info) for info in tags)
+          if type not in interested
+            return
+
+          [tag, tagstart]
+
+        explode = (info) =>
+          # Guess tag's end line
+          # I/O: (Tags, Start Line) -> (Tags, Start Line, End Line)
+          [tag, tagstart] = info
+          tagend = @finder.guessedTagEnd(tagstart)
+          [tag, tagstart, tagend]
+
+        tags = (filter(info) for info in tags)
+        tags = (explode(info) for info in tags when info?)
 
         map = @finder.buildScopeMap(tags)
 

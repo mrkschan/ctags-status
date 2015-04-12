@@ -32,11 +32,11 @@ module.exports =
     map = {}
 
     for info in tags  # tags sorted by DESC
-      [tag, type, tagstart, tagend] = info
+      [tag, tagstart, tagend] = info
       for i in [tagstart..tagend]
         if not map[i]?
           map[i] = []
-        map[i].push([tag, type])
+        map[i].push(tag)
 
     map
 
@@ -44,16 +44,8 @@ module.exports =
     editor = atom.workspace.getActiveTextEditor()
     current = editor.getCursorBufferPosition()
 
-    included_types = ['class', 'func', 'function', 'member']
-
     scopes = map[current.row]
     if not scopes?
-      return undefined
+      return
 
-    for [tag, type] in scopes  # Inner scope in the front
-      if type not in included_types
-        continue
-
-      return tag
-
-    undefined
+    scopes[0]  # Inner scope at the front, refer to buildScopeMap()
