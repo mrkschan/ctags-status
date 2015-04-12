@@ -1,5 +1,4 @@
 {BufferedProcess} = require 'atom'
-Q = require 'q'
 
 module.exports =
 class Ctags
