@@ -1,14 +1,21 @@
-Ctags = require './ctags'
-CtagsStatusView = require './ctags-status-view'
 {CompositeDisposable} = require 'atom'
+
+Ctags = null
+CtagsStatusView = null
+
+Cache = null
+Finder = null
 
 module.exports = CtagsStatus =
   ctagsStatusView: null
   subscriptions: null
 
   activate: (state) ->
-    Cache = require './ctags-cache'
-    @finder = require './scope-finder'
+    Ctags ?= require './ctags'
+    CtagsStatusView ?= require './ctags-status-view'
+
+    Cache ?= require './ctags-cache'
+    Finder ?= require './scope-finder'
 
     @cache = new Cache
     @ctags = new Ctags
@@ -36,6 +43,12 @@ module.exports = CtagsStatus =
 
     @subscriptions.dispose()
     @ctagsStatusView.destroy()
+
+    Ctags = null
+    CtagsStatusView = null
+
+    Cache = null
+    Finder = null
 
   serialize: ->
     ctagsStatusViewState: @ctagsStatusView.serialize()
@@ -73,7 +86,7 @@ module.exports = CtagsStatus =
     path = editor.getPath()
 
     findScope = (map) =>
-      parent = @finder.find map
+      parent = Finder.find map
       parent = if not parent? then 'global' else parent
 
       @ctagsStatusView.setText parent
@@ -95,13 +108,13 @@ module.exports = CtagsStatus =
           # Guess tag's end line
           # I/O: (Tags, Start Line) -> (Tags, Start Line, End Line)
           [tag, tagstart] = info
-          tagend = @finder.guessedTagEnd(tagstart)
+          tagend = Finder.guessedTagEnd(tagstart)
           [tag, tagstart, tagend]
 
         tags = (filter(info) for info in tags)
         tags = (explode(info) for info in tags when info?)
 
-        map = @finder.buildScopeMap(tags)
+        map = Finder.buildScopeMap(tags)
 
         @cache.add path, map
         findScope map
