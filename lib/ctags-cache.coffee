@@ -17,3 +17,6 @@ class Cache
 
   remove: (key) ->
     delete cache[encode(key)]
+
+  clear: ->
+    cache = {}

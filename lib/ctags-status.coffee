@@ -44,6 +44,8 @@ module.exports = CtagsStatus =
     @subscriptions.dispose()
     @ctagsStatusView.destroy()
 
+    @cache.clear()
+
     Ctags = null
     CtagsStatusView = null
 
