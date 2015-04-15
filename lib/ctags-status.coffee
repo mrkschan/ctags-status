@@ -25,7 +25,7 @@ module.exports = CtagsStatus =
     @editor_subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
-    @subscriptions.add atom.workspace.onDidChangeActivePaneItem =>
+    @subscriptions.add atom.workspace.observeActivePaneItem =>
       @unsubscribeLastActiveEditor()
       @subscribeToActiveEditor()
       @toggle()
@@ -34,9 +34,6 @@ module.exports = CtagsStatus =
       disposable = editor.onDidDestroy =>
         @cache.remove editor.getPath()
         disposable.dispose()
-
-    @subscribeToActiveEditor()
-    @toggle()
 
   deactivate: ->
     @unsubscribeLastActiveEditor()
