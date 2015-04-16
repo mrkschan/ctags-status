@@ -32,7 +32,11 @@ module.exports = CtagsStatus =
 
     @subscriptions.add atom.workspace.observeTextEditors (editor) =>
       disposable = editor.onDidDestroy =>
-        @cache.remove editor.getPath()
+        path = editor.getPath()
+
+        if path?
+          @cache.remove path
+
         disposable.dispose()
 
   deactivate: ->
@@ -83,6 +87,9 @@ module.exports = CtagsStatus =
       return
 
     path = editor.getPath()
+    if not path?
+      @ctagsStatusView.setText ''
+      return
 
     findScope = (map) =>
       parent = Finder.find map
