@@ -1,3 +1,7 @@
+## 1.1.1
+* Shorten the activation time
+* Bugfix: Prevent toggling when the file path is undefined
+
 ## 1.1.0 - Need for speed!
 * Create a scope map and use O(1) to lookup the scope
 * Scope lookup is executed in each cursor row change since it's lightweight now
