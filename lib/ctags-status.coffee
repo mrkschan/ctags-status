@@ -98,6 +98,9 @@ module.exports = CtagsStatus =
       @ctagsStatusView.setText parent
 
     if refresh or not @cache.has path
+      # Always add a blank map to prevent Ctags failure / no tag is found.
+      @cache.add path, {}
+
       @ctags.generateTags path, (tags) =>
         filter = (info) ->
           # Ignore un-interested tags
