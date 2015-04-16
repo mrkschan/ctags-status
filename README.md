@@ -6,6 +6,8 @@ Show function name of the current line on the status bar.
 
 Inspired by VIM Tag List plugin. Using Ctags to locate the start of functions / classes and heuristic (e.g. indentation / closing curly '}') to locate the end of them.
 
+If you like this plugin, leave it a **star** :) If you find any problem, create an **issue** at https://github.com/mrkschan/ctags-status/issues. If you find it works for any programming languages that are not in the **Tested languages** list, you may add it to the list by making a **pull request** at https://github.com/mrkschan/ctags-status/pulls.
+
 
 # Dependency
 
