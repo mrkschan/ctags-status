@@ -1,3 +1,8 @@
+## 1.1.2
+* Bugfix: Prevent non-necessary re-run Ctags when no tag is found in the file
+* Bugfix: Indentation heuristic should also end a scope with line having lower indent
+* Included spec for testing correctness of Python
+
 ## 1.1.1
 * Shorten the activation time
 * Bugfix: Prevent toggling when the file path is undefined
