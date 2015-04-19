@@ -19,7 +19,7 @@ module.exports =
 
       lineindent = editor.indentationForBufferRow i
 
-      if lineindent == tagindent
+      if lineindent <= tagindent
         ended = true
         if /^}/.test(trimmed)  # For languages using '}' to close a scope
           tagend = i
