@@ -26,3 +26,26 @@ describe "ScopeFinder", ->
 
     result = ScopeFinder.buildScopeMap(input)
     expect(JSON.stringify(result)).toBe JSON.stringify(output)
+
+  it "guesses the end of scopes in .py file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.py').then (editor)->
+        input = 0
+        output = 6
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 3
+        output = 6
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 15
+        output = 23
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 18
+        output = 21
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
