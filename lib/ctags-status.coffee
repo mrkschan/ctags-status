@@ -22,7 +22,6 @@ module.exports = CtagsStatus =
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
 
     @subscriptions = new CompositeDisposable
-    @editor_subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
     @subscriptions.add atom.workspace.observeActivePaneItem =>
@@ -41,8 +40,8 @@ module.exports = CtagsStatus =
 
   deactivate: ->
     @unsubscribeLastActiveEditor()
-
     @subscriptions.dispose()
+
     @ctagsStatusView.destroy()
 
     @cache.clear()
@@ -65,6 +64,8 @@ module.exports = CtagsStatus =
     if not editor?
       return
 
+    @editor_subscriptions = new CompositeDisposable
+
     @editor_subscriptions.add editor.onDidChangeCursorPosition (evt) =>
       last_pos = evt.oldBufferPosition
       this_pos = evt.newBufferPosition
@@ -78,7 +79,10 @@ module.exports = CtagsStatus =
       @toggle(true)
 
   unsubscribeLastActiveEditor: ->
-    @editor_subscriptions.dispose()
+    if @editor_subscriptions?
+      @editor_subscriptions.dispose()
+
+    @editor_subscriptions = null
 
   toggle: (refresh=false) ->
     editor = atom.workspace.getActiveTextEditor()
