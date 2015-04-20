@@ -1,3 +1,7 @@
+## 1.1.3
+* Bugfix: CompositeDisposable should not be re-used
+* Included spec for testing correctness of CSS
+
 ## 1.1.2
 * Bugfix: Prevent non-necessary re-run Ctags when no tag is found in the file
 * Bugfix: Indentation heuristic should also end a scope with line having lower indent
