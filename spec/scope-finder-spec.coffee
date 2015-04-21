@@ -50,6 +50,49 @@ describe "ScopeFinder", ->
         result = ScopeFinder.guessedTagEnd(input)
         expect(result).toBe output
 
+  it "guesses the end of scopes in .js file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.js').then (editor)->
+        input = 0
+        output = 2
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 4
+        output = 7
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 9
+        output = 11
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 13
+        output = 16
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 19
+        output = 21
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 22
+        output = 25
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 29
+        output = 31
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
+        input = 32
+        output = 35
+        result = ScopeFinder.guessedTagEnd(input)
+        expect(result).toBe output
+
   it "guesses the end of scopes in .py file", ->
     waitsForPromise ->
       atom.workspace.open('main.py').then (editor)->
