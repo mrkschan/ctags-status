@@ -12,6 +12,10 @@ module.exports =
     tagend = lastline
     for i in [tagstart + 1..lastline] when not ended
       text = editor.lineTextForBufferRow i
+      if not text?
+        # Skip when Atom cannot read any line from the Buffer
+        continue
+
       trimmed = text.trim()
       if trimmed == '' or trimmed.replace(/^{/, '') == ''
         # Blank line and open curly should not be considered as tag end line
