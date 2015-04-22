@@ -1,3 +1,7 @@
+## 1.1.4
+* Bugfix: Support classic JS function
+* Bugfix: Skip processing empty buffer
+
 ## 1.1.3
 * Bugfix: CompositeDisposable should not be re-used
 * Included spec for testing correctness of CSS
