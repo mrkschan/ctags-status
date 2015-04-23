@@ -2,7 +2,7 @@
   "name": "ctags-status",
   "main": "./lib/ctags-status",
   "version": "1.1.4",
-  "description": "Show function name of the current line on the status bar",
+  "description": "Show the class/function/scope name of the current line on the status bar.",
   "repository": "https://github.com/mrkschan/ctags-status",
   "license": "MIT",
   "engines": {
