@@ -10,6 +10,13 @@ module.exports = CtagsStatus =
   ctagsStatusView: null
   subscriptions: null
 
+  config:
+    ctagsTypes:
+      title: 'Ctags type(s)'
+      description: 'A list of CTags type(s) that could define a scope.'
+      type: 'string'
+      default: 'class,func,function,member'
+
   activate: (state) ->
     Ctags ?= require './ctags'
     CtagsStatusView ?= require './ctags-status-view'
@@ -109,7 +116,8 @@ module.exports = CtagsStatus =
         filter = (info) ->
           # Ignore un-interested tags
           # I/O: (Tags, Type, Start Line) -> (Tags, Start Line)
-          interested = ['class', 'func', 'function', 'member']
+          interested = atom.config.get('ctags-status.ctagsTypes')
+          interested = interested.split(',')
           [tag, type, tagstart] = info
 
           if type not in interested
