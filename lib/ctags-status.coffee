@@ -16,6 +16,14 @@ module.exports = CtagsStatus =
       description: 'A list of CTags type(s) that could define a scope.'
       type: 'string'
       default: 'class,func,function,member'
+    statusbarPriority:
+      title: 'Statusbar Priority'
+      description: 'The priority of the scope name on the status bar.
+                    Lower priority leans toward the side.'
+      type: 'integer'
+      default: 1
+      minimum: -1
+
 
   activate: (state) ->
     Ctags ?= require './ctags'
@@ -50,6 +58,9 @@ module.exports = CtagsStatus =
     @subscriptions.dispose()
 
     @ctagsStatusView.destroy()
+    @statusBarTile?.destroy()
+    @statusBarTile = null
+    @statusBar = null
 
     @cache.clear()
 
@@ -63,8 +74,11 @@ module.exports = CtagsStatus =
     ctagsStatusViewState: @ctagsStatusView.serialize()
 
   consumeStatusBar: (statusBar) ->
-    @statusBar = statusBar.addLeftTile(item: @ctagsStatusView.getElement(),
-                                       priority: 100)
+    @statusBar = statusBar
+    options =
+      item: @ctagsStatusView.getElement()
+      priority: atom.config.get('ctags-status.statusbarPriority')
+    @statusBarTile = @statusBar.addLeftTile(options)
 
   subscribeToActiveEditor: ->
     editor = atom.workspace.getActiveTextEditor()
