@@ -1,3 +1,7 @@
+## 1.2.0 - Customization age.
+* Support config of included Ctags type
+* Support config of statusbar priority
+
 ## 1.1.4
 * Bugfix: Support classic JS function
 * Bugfix: Skip processing empty buffer
