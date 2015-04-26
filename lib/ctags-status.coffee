@@ -38,6 +38,14 @@ module.exports = CtagsStatus =
 
     @subscriptions = new CompositeDisposable
 
+    # Register config monitors
+    @subscriptions.add atom.config.onDidChange 'ctags-status.statusbarPriority',
+    ({newValue, oldValue}) =>
+      priority = newValue
+
+      @ctagsStatusView.unmount()
+      @ctagsStatusView.mount(@statusBar, priority)
+
     # Register command that toggles this view
     @subscriptions.add atom.workspace.observeActivePaneItem =>
       @unsubscribeLastActiveEditor()
@@ -58,8 +66,6 @@ module.exports = CtagsStatus =
     @subscriptions.dispose()
 
     @ctagsStatusView.destroy()
-    @statusBarTile?.destroy()
-    @statusBarTile = null
     @statusBar = null
 
     @cache.clear()
@@ -75,10 +81,9 @@ module.exports = CtagsStatus =
 
   consumeStatusBar: (statusBar) ->
     @statusBar = statusBar
-    options =
-      item: @ctagsStatusView.getElement()
-      priority: atom.config.get('ctags-status.statusbarPriority')
-    @statusBarTile = @statusBar.addLeftTile(options)
+
+    priority = atom.config.get('ctags-status.statusbarPriority')
+    @ctagsStatusView.mount(@statusBar, priority)
 
   subscribeToActiveEditor: ->
     editor = atom.workspace.getActiveTextEditor()
