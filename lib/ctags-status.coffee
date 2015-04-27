@@ -128,8 +128,8 @@ module.exports = CtagsStatus =
       @ctagsStatusView.setText parent
 
     if refresh or not @cache.has path
-      # Always add a blank map to prevent Ctags failure / no tag is found.
-      @cache.add path, {}
+      # Always set a blank map to prevent Ctags failure / no tag is found.
+      @cache.set path, {}
 
       @ctags.generateTags path, (tags) =>
         filter = (info) ->
@@ -156,7 +156,7 @@ module.exports = CtagsStatus =
 
         map = Finder.buildScopeMap(tags)
 
-        @cache.add path, map
+        @cache.set path, map
         findScope map
     else
       map = @cache.get path
