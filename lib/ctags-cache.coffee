@@ -28,13 +28,13 @@ class List
 
   detach: (node) ->
     if node.next?
-      node.next.last = null
+      node.next.last = node.last
       node.last?.next = node.next
     else
       @tail = node.last
 
     if node.last?
-      node.last.next = null
+      node.last.next = node.next
       node.next?.last = node.last
     else
       @head = node.next
@@ -56,15 +56,14 @@ class List
     node
 
   clear: ->
+    node = @head
+    while node?
+      next = node.next
+      node.next = node.last = null
+      node = next
+
     @head = @tail = null
     @length = 0
-
-  dump: ->
-    node = @head
-    while node
-      console.log node.key
-      node = node.next
-    console.log @length
 
 
 module.exports =
@@ -84,19 +83,15 @@ class Cache  # Least-recent-used cache
       @cache.attach(node)
       @index[encoded_key] = node
 
-    # if @cache.length == 5
-    #   least_used = @cache.strip()
-    #   console.log 'LEAST', least_used.key
-    #
-    #   delete @index[least_used.key]
+    if @cache.length > 5
+      least_used = @cache.strip()
+      delete @index[least_used.key]
 
   get: (key) ->
-    @cache.dump()
-
     encoded_key = encode(key)
 
     node = @index[encoded_key]
-    # @cache.touch node
+    @cache.touch node
 
     node.value
 
@@ -104,7 +99,6 @@ class Cache  # Least-recent-used cache
     @index[encode(key)]?
 
   remove: (key) ->
-    console.log "RM", key
     encoded_key = encode(key)
 
     if not @index[encode(key)]?
