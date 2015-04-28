@@ -23,6 +23,12 @@ module.exports = CtagsStatus =
       type: 'integer'
       default: 1
       minimum: -1
+    cacheSize:
+      title: 'Cache size'
+      description: 'Number of slots to hold Ctags cache in memory.'
+      type: 'integer'
+      default: 8
+      minimum: 1
 
 
   activate: (state) ->
@@ -32,7 +38,9 @@ module.exports = CtagsStatus =
     Cache ?= require './ctags-cache'
     Finder ?= require './scope-finder'
 
-    @cache = new Cache
+    cache_size = atom.config.get('ctags-status.cacheSize')
+
+    @cache = new Cache(cache_size)
     @ctags = new Ctags
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
 

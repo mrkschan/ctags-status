@@ -68,7 +68,9 @@ class List
 
 module.exports =
 class Cache  # Least-recent-used cache
-  constructor: ->
+  constructor: (size) ->
+    @size = size
+
     @index = {}
     @cache = new List()
 
@@ -83,7 +85,7 @@ class Cache  # Least-recent-used cache
       @cache.attach(node)
       @index[encoded_key] = node
 
-    if @cache.length > 5
+    if @cache.length > @size
       least_used = @cache.strip()
       delete @index[least_used.key]
 
