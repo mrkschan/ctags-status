@@ -1,10 +1,13 @@
 {CompositeDisposable} = require 'atom'
 
+Q = null
+
 Ctags = null
 CtagsStatusView = null
 
 Cache = null
 Finder = null
+
 
 module.exports = CtagsStatus =
   ctagsStatusView: null
@@ -32,6 +35,8 @@ module.exports = CtagsStatus =
 
 
   activate: (state) ->
+    Q ?= require 'q'
+
     Ctags ?= require './ctags'
     CtagsStatusView ?= require './ctags-status-view'
 
@@ -77,6 +82,9 @@ module.exports = CtagsStatus =
     @statusBar = null
 
     @cache.clear()
+    @cache = null
+
+    Q = null
 
     Ctags = null
     CtagsStatusView = null
@@ -139,7 +147,18 @@ module.exports = CtagsStatus =
       # Always set a blank map to prevent Ctags failure / no tag is found.
       @cache.set path, {}
 
-      @ctags.generateTags path, (tags) =>
+      deferred = Q.defer()
+
+      disposable = editor.getBuffer().onDidDestroy ->
+        deferred.reject()
+
+      @ctags.generateTags path, (tags) ->
+        deferred.resolve(tags)
+
+      deferred.promise.fin ->
+        disposable.dispose()
+
+      deferred.promise.then (tags) =>
         filter = (info) ->
           # Ignore un-interested tags
           # I/O: (Tags, Type, Start Line) -> (Tags, Start Line)
@@ -152,7 +171,7 @@ module.exports = CtagsStatus =
 
           [tag, tagstart]
 
-        explode = (info) =>
+        explode = (info) ->
           # Guess tag's end line
           # I/O: (Tags, Start Line) -> (Tags, Start Line, End Line)
           [tag, tagstart] = info
