@@ -2,13 +2,15 @@ ScopeFinder = require '../lib/scope-finder'
 
 describe "ScopeFinder", ->
   it "builds a map of scopes (line => scopes)", ->
+    finder = ScopeFinder.on(null)
+
     input = [['tag', 1, 3]]
     output =
       1: ['tag']
       2: ['tag']
       3: ['tag']
 
-    result = ScopeFinder.buildScopeMap(input)
+    result = finder.scopeMapFrom(input)
     expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
     input = [['tagA', 1, 3], ['tagB', 0, 2]]
@@ -18,100 +20,106 @@ describe "ScopeFinder", ->
       2: ['tagA', 'tagB']
       3: ['tagA']
 
-    result = ScopeFinder.buildScopeMap(input)
+    result = finder.scopeMapFrom(input)
     expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
     input = []
     output = {}
 
-    result = ScopeFinder.buildScopeMap(input)
+    result = finder.scopeMapFrom(input)
     expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .css file", ->
     waitsForPromise ->
-      atom.workspace.open('main.css').then (editor)->
+      atom.workspace.open('main.css').then (editor) ->
+        finder = ScopeFinder.on(editor)
+
         input = 0
         output = 2
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 4
         output = 6
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 8
         output = 10
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 12
         output = 14
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
   it "guesses the end of scopes in .js file", ->
     waitsForPromise ->
-      atom.workspace.open('main.js').then (editor)->
+      atom.workspace.open('main.js').then (editor) ->
+        finder = ScopeFinder.on(editor)
+
         input = 0
         output = 2
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 4
         output = 7
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 9
         output = 11
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 13
         output = 16
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 19
         output = 21
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 22
         output = 25
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 29
         output = 31
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 32
         output = 35
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
   it "guesses the end of scopes in .py file", ->
     waitsForPromise ->
-      atom.workspace.open('main.py').then (editor)->
+      atom.workspace.open('main.py').then (editor) ->
+        finder = ScopeFinder.on(editor)
+
         input = 0
         output = 6
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 3
         output = 6
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 15
         output = 23
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 18
         output = 21
-        result = ScopeFinder.guessedTagEnd(input)
+        result = finder.guessedTagEndFrom(input)
         expect(result).toBe output

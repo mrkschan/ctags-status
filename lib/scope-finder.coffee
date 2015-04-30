@@ -1,17 +1,18 @@
 require 'atom'
 
-module.exports =
-  guessedTagEnd: (tagstart) ->
-    # Guess tag end line by assuming both start and end lines use same indent
-    editor = atom.workspace.getActiveTextEditor()
-    lastline = editor.getLastBufferRow()
+class Finder
+  constructor: (editor) ->
+    @editor = editor
 
-    tagindent = editor.indentationForBufferRow tagstart
+  guessedTagEndFrom: (tagstart) ->
+    # Guess tag end line by assuming both start and end lines use same indent
+    lastline = @editor.getLastBufferRow()
+    tagindent = @editor.indentationForBufferRow tagstart
 
     ended = false
     tagend = lastline
     for i in [tagstart + 1..lastline] when not ended
-      text = editor.lineTextForBufferRow i
+      text = @editor.lineTextForBufferRow i
       if not text?
         # Skip when Atom cannot read any line from the Buffer
         continue
@@ -21,7 +22,7 @@ module.exports =
         # Blank line and open curly should not be considered as tag end line
         continue
 
-      lineindent = editor.indentationForBufferRow i
+      lineindent = @editor.indentationForBufferRow i
 
       if lineindent <= tagindent
         ended = true
@@ -32,7 +33,7 @@ module.exports =
 
     tagend
 
-  buildScopeMap: (tags) ->
+  scopeMapFrom: (tags) ->
     map = {}
 
     for info in tags  # tags sorted by DESC
@@ -44,12 +45,15 @@ module.exports =
 
     map
 
-  find: (map) ->
-    editor = atom.workspace.getActiveTextEditor()
-    current = editor.getCursorBufferPosition()
-
+  findScopeFrom: (map) ->
+    current = @editor.getCursorBufferPosition()
     scopes = map[current.row]
     if not scopes?
       return
 
     scopes[0]  # Inner scope at the front, refer to buildScopeMap()
+
+
+module.exports =
+  on: (editor) ->
+    new Finder(editor)

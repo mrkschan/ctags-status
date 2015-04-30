@@ -137,8 +137,10 @@ module.exports = CtagsStatus =
       @ctagsStatusView.setText ''
       return
 
+    finder = Finder.on(editor)
+
     findScope = (map) =>
-      parent = Finder.find map
+      parent = finder.findScopeFrom map
       parent = if not parent? then 'global' else parent
 
       @ctagsStatusView.setText parent
@@ -175,13 +177,13 @@ module.exports = CtagsStatus =
           # Guess tag's end line
           # I/O: (Tags, Start Line) -> (Tags, Start Line, End Line)
           [tag, tagstart] = info
-          tagend = Finder.guessedTagEnd(tagstart)
+          tagend = finder.guessedTagEndFrom tagstart
           [tag, tagstart, tagend]
 
         tags = (filter(info) for info in tags)
         tags = (explode(info) for info in tags when info?)
 
-        map = Finder.buildScopeMap(tags)
+        map = finder.scopeMapFrom tags
 
         @cache.set path, map
         findScope map
