@@ -1,3 +1,8 @@
+## 1.2.1 - Customization age.
+* Fix: Stop processing closed buffer
+* Fix: Prevent race condition in processing buffers concurrently
+* Least-recent used cache deployed (\w configurable cache slots)
+
 ## 1.2.0 - Customization age.
 * Support config of included Ctags type
 * Support config of statusbar priority
