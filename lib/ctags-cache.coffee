@@ -43,6 +43,9 @@ class List
     @length -= 1
 
   touch: (node) ->
+    if @head == node
+      return
+
     @detach node
     @attach node
 
