@@ -93,11 +93,11 @@ class LRUCache  # Least-recent-used cache
       delete @index[least_used.key]
 
   get: (key) ->
-    encoded_key = encode(key)
+    node = @index[encode(key)]
+    if not node?
+      return
 
-    node = @index[encoded_key]
     @cache.touch node
-
     node.value
 
   has: (key) ->

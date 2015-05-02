@@ -12,3 +12,4 @@ describe "LRUCache", ->
       expect(cache.get('k1')).toBe 'v1'
       expect(cache.get('k2')).toBe 'v2'
       expect(cache.get('k3')).toBe 'v3'
+      expect(cache.get('k4')).toBe undefined
