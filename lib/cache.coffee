@@ -70,7 +70,7 @@ class List
 
 
 module.exports =
-class Cache  # Least-recent-used cache
+class LRUCache  # Least-recent-used cache
   constructor: (size) ->
     @size = size
 
