@@ -40,7 +40,7 @@ module.exports = CtagsStatus =
     Ctags ?= require './ctags'
     CtagsStatusView ?= require './ctags-status-view'
 
-    Cache ?= require './ctags-cache'
+    Cache ?= require './cache'
     Finder ?= require './scope-finder'
 
     cache_size = atom.config.get('ctags-status.cacheSize')
