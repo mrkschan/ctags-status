@@ -1,0 +1,14 @@
+LRUCache = require '../lib/cache'
+
+
+describe "LRUCache", ->
+  it "builds a cache of key => value", ->
+      cache = new LRUCache(5)
+
+      cache.set('k1', 'v1')
+      cache.set('k2', 'v2')
+      cache.set('k3', 'v3')
+
+      expect(cache.get('k1')).toBe 'v1'
+      expect(cache.get('k2')).toBe 'v2'
+      expect(cache.get('k3')).toBe 'v3'
