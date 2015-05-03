@@ -53,3 +53,25 @@ describe "LRUCache", ->
 
       node = node.next
       expect(node.value).toBe 'v2'
+
+    it "supports item removal", ->
+      cache = new LRUCache(4)
+
+      cache.set('k1', 'v1')
+      cache.set('k2', 'v2')
+      cache.set('k3', 'v3')
+      cache.set('k4', 'v4')
+
+      cache.remove('k3')
+
+      expect(cache.get('k1')).toBe 'v1'
+      expect(cache.get('k2')).toBe 'v2'
+      expect(cache.get('k3')).toBe undefined
+      expect(cache.get('k4')).toBe 'v4'
+
+      cache.clear()
+
+      expect(cache.get('k1')).toBe undefined
+      expect(cache.get('k2')).toBe undefined
+      expect(cache.get('k3')).toBe undefined
+      expect(cache.get('k4')).toBe undefined
