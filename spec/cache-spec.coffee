@@ -30,3 +30,26 @@ describe "LRUCache", ->
       expect(cache.get('k4')).toBe 'v4'
       expect(cache.get('k5')).toBe 'v5'
       expect(cache.get('k6')).toBe 'v6'
+
+  it "keeps the most recent item at the front of the list", ->
+      cache = new LRUCache(4)
+
+      cache.set('k1', 'v1')
+      cache.set('k2', 'v2')
+      cache.set('k3', 'v3')
+      cache.set('k4', 'v4')
+
+      cache.get('k1')
+      cache.get('k3')
+
+      node = cache.nodes.head
+      expect(node.value).toBe 'v3'
+
+      node = node.next
+      expect(node.value).toBe 'v1'
+
+      node = node.next
+      expect(node.value).toBe 'v4'
+
+      node = node.next
+      expect(node.value).toBe 'v2'

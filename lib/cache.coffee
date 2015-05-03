@@ -75,7 +75,7 @@ class LRUCache  # Least-recent-used cache
     @size = size
 
     @index = {}
-    @cache = new List()
+    @nodes = new List()
 
   set: (key, value) ->
     encoded_key = encode(key)
@@ -85,11 +85,11 @@ class LRUCache  # Least-recent-used cache
       node.value = value
     else
       node = new Node(encoded_key, value)
-      @cache.attach(node)
+      @nodes.attach(node)
       @index[encoded_key] = node
 
-    if @cache.length > @size
-      least_used = @cache.strip()
+    if @nodes.length > @size
+      least_used = @nodes.strip()
       delete @index[least_used.key]
 
   get: (key) ->
@@ -97,7 +97,7 @@ class LRUCache  # Least-recent-used cache
     if not node?
       return
 
-    @cache.touch node
+    @nodes.touch node
     node.value
 
   has: (key) ->
@@ -110,10 +110,10 @@ class LRUCache  # Least-recent-used cache
       return
 
     node = @index[encoded_key]
-    @cache.detach node
+    @nodes.detach node
 
     delete @index[encoded_key]
 
   clear: ->
-    @cache.clear()
+    @nodes.clear()
     @index = {}
