@@ -26,5 +26,7 @@ class CtagsStatusView
   setText: (text)  ->
     if text == ''
       @element.textContent = ''
+      @element.classList.add 'blank'
     else
-      @element.textContent = "[#{text}]"
+      @element.textContent = "#{text}"
+      @element.classList.remove 'blank'

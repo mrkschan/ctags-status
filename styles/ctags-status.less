@@ -4,5 +4,20 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
-.ctags-status {
+.ctags-status.func-info {
+    &:before {
+        content: "[";
+    }
+    &:after {
+        content: "]";
+    }
+}
+
+.ctags-status.func-info.blank {
+    &:before {
+        content: "";
+    }
+    &:after {
+        content: "";
+    }
 }
