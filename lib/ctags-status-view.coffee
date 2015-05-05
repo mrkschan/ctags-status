@@ -24,9 +24,14 @@ class CtagsStatusView
     @element
 
   setText: (text)  ->
+    while @element.firstChild?
+      @element.removeChild(@element.firstChild)
+
     if text == ''
-      @element.textContent = ''
       @element.classList.add 'blank'
     else
-      @element.textContent = "#{text}"
       @element.classList.remove 'blank'
+
+      span = document.createElement('span')
+      span.textContent = text
+      @element.appendChild(span)
