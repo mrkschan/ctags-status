@@ -129,12 +129,12 @@ module.exports = CtagsStatus =
   toggle: (refresh=false) ->
     editor = atom.workspace.getActiveTextEditor()
     if not editor?
-      @ctagsStatusView.setText ''
+      @ctagsStatusView.clear()
       return
 
     path = editor.getPath()
     if not path?
-      @ctagsStatusView.setText ''
+      @ctagsStatusView.clear()
       return
 
     finder = Finder.on(editor)
@@ -143,7 +143,8 @@ module.exports = CtagsStatus =
       parent = finder.findScopeFrom map
       parent = if not parent? then 'global' else parent
 
-      @ctagsStatusView.setText parent
+      @ctagsStatusView.clear()
+      @ctagsStatusView.addText parent
 
     if refresh or not @cache.has path
       # Always set a blank map to prevent Ctags failure / no tag is found.
