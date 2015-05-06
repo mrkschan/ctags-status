@@ -36,7 +36,7 @@ class Finder
   scopeMapFrom: (tags) ->
     map = {}
 
-    for info in tags  # tags sorted by DESC
+    for info in tags  # tags sorted by tagstart ASC
       [tag, tagstart, tagend] = info
       for i in [tagstart..tagend]
         if not map[i]?
@@ -45,13 +45,13 @@ class Finder
 
     map
 
-  findScopeFrom: (map) ->
+  getScopesFrom: (map) ->
     current = @editor.getCursorBufferPosition()
     scopes = map[current.row]
     if not scopes?
       return
 
-    scopes[0]  # Inner scope at the front, refer to buildScopeMap()
+    scopes  # Inner scope at last, refer to scopeMapFrom()
 
 
 module.exports =

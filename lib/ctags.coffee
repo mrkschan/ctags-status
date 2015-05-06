@@ -30,7 +30,7 @@ class Ctags
 
     stdout = (lines) =>
       tags = @parseTags lines
-      tags.sort((x, y) -> y[2] - x[2])  # Sort lineno by desc order
+      tags.sort((x, y) -> x[2] - y[2])  # Sort lineno by asc order
 
       callback tags
 

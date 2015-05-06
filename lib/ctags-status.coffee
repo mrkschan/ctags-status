@@ -140,11 +140,11 @@ module.exports = CtagsStatus =
     finder = Finder.on(editor)
 
     findScope = (map) =>
-      parent = finder.findScopeFrom map
-      parent = if not parent? then 'global' else parent
+      scopes = finder.getScopesFrom map
+      scopes = if not scopes? then ['global'] else scopes
 
       @ctagsStatusView.clear()
-      @ctagsStatusView.addText parent
+      @ctagsStatusView.addText scopes[scopes.length-1]
 
     if refresh or not @cache.has path
       # Always set a blank map to prevent Ctags failure / no tag is found.
