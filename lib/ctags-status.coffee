@@ -32,6 +32,11 @@ module.exports = CtagsStatus =
       type: 'integer'
       default: 8
       minimum: 1
+    outerScope:
+      title: 'Show outer scope(s)'
+      description: 'Show all scope(s) on current line.'
+      type: 'boolean'
+      default: false
 
 
   activate: (state) ->
@@ -144,7 +149,12 @@ module.exports = CtagsStatus =
       scopes = if not scopes? then ['global'] else scopes
 
       @ctagsStatusView.clear()
-      @ctagsStatusView.addText scopes[scopes.length-1]
+      show_outer = atom.config.get('ctags-status.outerScope')
+      if show_outer
+        for scope in scopes
+          @ctagsStatusView.addText scope
+      else
+        @ctagsStatusView.addText scopes[scopes.length-1]
 
     if refresh or not @cache.has path
       # Always set a blank map to prevent Ctags failure / no tag is found.

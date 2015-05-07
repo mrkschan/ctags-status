@@ -7,17 +7,28 @@
 .ctags-status.func-info {
     &:before {
         content: "[";
+        margin-right: 1px;
     }
     &:after {
         content: "]";
+        margin-left: 1px;
+    }
+
+    span + span {
+        &:before {
+            content: ">";
+            margin: 0 3px;
+        }
     }
 }
 
 .ctags-status.func-info.blank {
     &:before {
         content: "";
+        margin: 0;
     }
     &:after {
         content: "";
+        margin: 0;
     }
 }
