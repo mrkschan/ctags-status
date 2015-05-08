@@ -1,4 +1,8 @@
-## 1.2.1 - Customization age.
+## 1.2.2 -
+* Allow using less/css to decorate the scope on statusbar
+* Support showing outer scope on current line
+
+## 1.2.1 -
 * Fix: Stop processing closed buffer
 * Fix: Prevent race condition in processing buffers concurrently
 * Least-recent used cache deployed (\w configurable cache slots)
