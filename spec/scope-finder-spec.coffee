@@ -123,3 +123,23 @@ describe "ScopeFinder", ->
         output = 21
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
+
+  it "guesses the end of scopes in .php file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.php').then (editor) ->
+        finder = ScopeFinder.on(editor)
+
+        input = 2
+        output = 4
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 6
+        output = 13
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 9
+        output = 12
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
