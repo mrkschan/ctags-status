@@ -8,13 +8,16 @@ class Ctags
       if line == ''
         return []
 
-      parts = line.split '\t'
-      [tag, path, snippet, type, lineno] = parts
-      lineno = lineno.replace 'line:', ''
-      lineno = parseInt lineno, 10
-      lineno = lineno - 1  # Use zero based
+      # Format: tag_name<TAB>file_name<TAB>ex_cmd;"<TAB>extension_fields
+      [lpart, rpart] = line.split ';"\t'
+      [tag_name, file_name, pattern] = lpart.split '\t'
+      [tag_type, line_no] = rpart.split '\t'
 
-      [tag, type, lineno]
+      line_no = line_no.replace 'line:', ''
+      line_no = parseInt line_no, 10
+      line_no = line_no - 1  # Use zero based
+
+      [tag_name, tag_type, line_no]
 
     tags = (parse line for line in lines.split '\n')
     (tag for tag in tags when tag.length > 0)
@@ -25,12 +28,12 @@ class Ctags
     command = 'ctags'
 
     args = []
-    args.push("--options=#{presets}", '--fields=+KSn', '--excmd=p')
+    args.push("--options=#{presets}", '--fields=+Kn', '--excmd=p')
     args.push('-R', '-f', '-', path)
 
     stdout = (lines) =>
       tags = @parseTags lines
-      tags.sort((x, y) -> x[2] - y[2])  # Sort lineno by asc order
+      tags.sort((x, y) -> x[2] - y[2])  # Sort line_no by asc order
 
       callback tags
 
