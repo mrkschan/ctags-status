@@ -1,3 +1,7 @@
+## 1.2.3 -
+* Bug fix for parsing Ctags output
+* Included spec for testing correctness of PHP
+
 ## 1.2.2 -
 * Allow using less/css to decorate the scope on statusbar
 * Support showing outer scope on current line
