@@ -31,6 +31,10 @@ class Finder
         else  # For languages using indentation to close a scope
           tagend = i - 1
 
+    # Strip trailing blank lines
+    while @editor.lineTextForBufferRow(tagend).trim() == ''
+      tagend = tagend - 1
+
     tagend
 
   scopeMapFrom: (tags) ->

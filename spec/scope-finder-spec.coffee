@@ -105,22 +105,22 @@ describe "ScopeFinder", ->
         finder = ScopeFinder.on(editor)
 
         input = 0
-        output = 6
+        output = 4
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 3
-        output = 6
+        output = 4
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 15
-        output = 23
+        output = 22
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
         input = 18
-        output = 21
+        output = 20
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
 
