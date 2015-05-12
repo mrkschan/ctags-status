@@ -13,4 +13,6 @@ class Main {
 	}
 }
 
+function noop() {}
+
 ?>

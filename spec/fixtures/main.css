@@ -13,3 +13,5 @@ body {
 body#body.body, h1:after {
     display: block;
 }
+
+body .oneline { display: hidden; }

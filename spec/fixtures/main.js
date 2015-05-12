@@ -35,3 +35,5 @@ O = {
         return;
     }
 };
+
+function noop() {}
