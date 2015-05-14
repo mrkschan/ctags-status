@@ -18,11 +18,15 @@ class Finder
         continue
 
       trimmed = text.trim()
-      if trimmed == '' or trimmed.replace(/^{/, '') == ''
-        # Blank line and open curly should not be considered as tag end line
+      if trimmed == ''
+        # Blank line should not be considered as tag end line
         continue
 
       lineindent = @editor.indentationForBufferRow i
+
+      if lineindent == tagindent && /^{.*/.test(trimmed)
+        # Open curly should not be considered as tag end line
+        continue
 
       if lineindent <= tagindent
         ended = true

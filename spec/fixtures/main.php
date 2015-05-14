@@ -15,4 +15,16 @@ class Main {
 
 function noop() {}
 
+function globalG()
+{ return 1; }
+
+function globalH()
+{
+	if (1) 
+	{
+		return 0;
+	}
+	return 1;
+}
+
 ?>
