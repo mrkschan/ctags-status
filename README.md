@@ -48,6 +48,11 @@ brew install ctags
 2. Unzip the binary to anywhere that can be located by your PATH.
 
 
+# How it works
+
+* Scope finding - http://mrkschan.blogspot.hk/2015/05/scope-finding-in-source-file.html
+
+
 # Changelog
 
 https://github.com/mrkschan/ctags-status/blob/master/CHANGELOG.md
