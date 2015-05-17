@@ -183,3 +183,13 @@ describe "ScopeFinder", ->
         output = 6
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
+
+        input = 8
+        output = 10
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 12
+        output = 14
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output

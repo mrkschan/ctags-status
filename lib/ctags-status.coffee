@@ -18,7 +18,7 @@ module.exports = CtagsStatus =
       title: 'Ctags type(s)'
       description: 'A list of CTags type(s) that could define a scope.'
       type: 'string'
-      default: 'class,func,function,member'
+      default: 'class,func,function,member,type'
     statusbarPriority:
       title: 'Statusbar Priority'
       description: 'The priority of the scope name on the status bar.
