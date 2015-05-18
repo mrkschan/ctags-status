@@ -193,3 +193,38 @@ describe "ScopeFinder", ->
         output = 14
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
+
+  it "guesses the end of scopes in .coffee file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.coffee').then (editor) ->
+        finder = ScopeFinder.on(editor)
+
+        input = 8
+        output = 9
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 12
+        output = 13
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 16
+        output = 18
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 17
+        output = 18
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 20
+        output = 22
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 21
+        output = 22
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
