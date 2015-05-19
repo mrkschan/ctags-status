@@ -199,6 +199,16 @@ describe "ScopeFinder", ->
       atom.workspace.open('main.coffee').then (editor) ->
         finder = ScopeFinder.on(editor)
 
+        input = 0
+        output = 2
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 4
+        output = 6
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
         input = 8
         output = 9
         result = finder.guessedTagEndFrom(input)

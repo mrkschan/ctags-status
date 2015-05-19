@@ -1,10 +1,10 @@
-# function plainJS() {
-#     return 1;
-# }
-#
-# plainJS2 = function() {
-#     return 1;
-# }
+function plainJS() {
+    return 1;
+}
+
+plainJS2 = function() {
+    return 1;
+}
 
 coffee = ->
     1
