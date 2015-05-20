@@ -1,3 +1,9 @@
+## 1.2.4 -
+* Bug fix in guessing end of scope, no trailing blank lines (supporting one-liner functions in curly languages)
+* Bug fix in guessing start of scope, accepting codes following open curly (supporting two-liner functions in curly languages)
+* Bug fix in Golang support, covers 'type' (struct / interface) now
+* Bug fix in Coffeescript support, covers plain old JS function now
+
 ## 1.2.3 -
 * Bug fix for parsing Ctags output
 * Included spec for testing correctness of PHP
