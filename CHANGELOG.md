@@ -1,3 +1,7 @@
+## 1.2.5 -
+* Adopt atom-status v1.0.0 provided service
+* Ctags output parser now ignores malformed inputs (e.g. warnings from Ctags)
+
 ## 1.2.4 -
 * Bug fix in guessing end of scope, no trailing blank lines (supporting one-liner functions in curly languages)
 * Bug fix in guessing start of scope, accepting codes following open curly (supporting two-liner functions in curly languages)
