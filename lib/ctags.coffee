@@ -10,6 +10,10 @@ class Ctags
 
       # Format: tag_name<TAB>file_name<TAB>ex_cmd;"<TAB>extension_fields
       [lpart, rpart] = line.split ';"\t'
+      if not lpart? or not rpart?
+        console.warn 'ctags-status: Found malformed ctags output - "#{line}"'
+        return []
+
       [tag_name, file_name, pattern...] = lpart.split '\t'
       [tag_type, line_no] = rpart.split '\t'
 
