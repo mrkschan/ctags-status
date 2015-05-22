@@ -17,5 +17,12 @@
         "^1.0.0": "consumeStatusBar"
       }
     }
-  }
+  },
+  "keywords": [
+    "ctags",
+    "statusbar",
+    "function",
+    "class",
+    "scope"
+  ]
 }
