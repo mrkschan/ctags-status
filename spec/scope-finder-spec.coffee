@@ -238,3 +238,38 @@ describe "ScopeFinder", ->
         output = 22
         result = finder.guessedTagEndFrom(input)
         expect(result).toBe output
+
+  it "guesses the end of scopes in .cpp file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.cpp').then (editor) ->
+        finder = ScopeFinder.on(editor)
+
+        input = 1
+        output = 3
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 5
+        output = 5
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 7
+        output = 8
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 10
+        output = 10
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 12
+        output = 17
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
+
+        input = 14
+        output = 16
+        result = finder.guessedTagEndFrom(input)
+        expect(result).toBe output
