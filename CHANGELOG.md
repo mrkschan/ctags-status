@@ -1,3 +1,6 @@
+## 1.2.6 -
+* Keyword update on atom.io listing
+
 ## 1.2.5 -
 * Adopt atom-status v1.0.0 provided service
 * Ctags output parser now ignores malformed inputs (e.g. warnings from Ctags)
