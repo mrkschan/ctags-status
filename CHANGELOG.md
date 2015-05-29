@@ -1,3 +1,6 @@
+## 1.2.7 -
+* Ctags now covers 'interface' and 'method'
+
 ## 1.2.6 -
 * Keyword update on atom.io listing
 
