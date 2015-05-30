@@ -30,7 +30,9 @@ class Finder
 
       if lineindent <= tagindent
         ended = true
-        if /^}/.test(trimmed)  # For languages using '}' to close a scope
+        if /^}/.test(trimmed)  # For langs using '}' to close a scope
+          tagend = i
+        else if /^end\s*/.test(trimmed)  # For langs using 'end' to close a scope
           tagend = i
         else  # For languages using indentation to close a scope
           tagend = i - 1
