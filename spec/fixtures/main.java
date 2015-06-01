@@ -8,6 +8,8 @@ public class Main {
 
 interface I {
     public boolean doable();
+
+    public boolean makable();
 }
 
 abstract class A {

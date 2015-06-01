@@ -28,14 +28,24 @@ class Finder
         # Open curly should not be considered as tag end line
         continue
 
-      if lineindent <= tagindent
+      if /^}/.test(trimmed)
+        # For languages using '}' to close a scope
+        if lineindent == tagindent
+          ended = true
+          tagend = i  # Belongs to current scope
+        else if lineindent < tagindent
+          ended = true
+          tagend = i - 1  # Belongs to outer scope
+      else if /^end\s*/.test(trimmed)
+        # For languages using 'end' to close a scope
+        if lineindent == tagindent
+          ended = true
+          tagend = i
+      else if lineindent <= tagindent
+        # For languages using indentation to close a scope
         ended = true
-        if /^}/.test(trimmed)  # For langs using '}' to close a scope
-          tagend = i
-        else if /^end\s*/.test(trimmed)  # For langs using 'end' to close a scope
-          tagend = i
-        else  # For languages using indentation to close a scope
-          tagend = i - 1
+        tagend = i - 1
+
 
     # Strip trailing blank lines
     while @editor.lineTextForBufferRow(tagend).trim() == ''
