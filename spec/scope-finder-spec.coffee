@@ -2,32 +2,33 @@ ScopeFinder = require '../lib/scope-finder'
 
 describe "ScopeFinder", ->
   it "builds a map of scopes (line => scopes)", ->
-    finder = ScopeFinder.on(null)
+    atom.workspace.open('main.txt').then (editor) ->
+      finder = ScopeFinder.on(editor)
 
-    input = [['tag', 1, 3]]
-    output =
-      1: ['tag']
-      2: ['tag']
-      3: ['tag']
+      input = [['tag', 1, 3]]
+      output =
+        1: ['tag']
+        2: ['tag']
+        3: ['tag']
 
-    result = finder.scopeMapFrom(input)
-    expect(JSON.stringify(result)).toBe JSON.stringify(output)
+      result = finder.scopeMapFrom(input)
+      expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
-    input = [['tagA', 1, 3], ['tagB', 0, 2]]
-    output =
-      0: ['tagB']
-      1: ['tagA', 'tagB']
-      2: ['tagA', 'tagB']
-      3: ['tagA']
+      input = [['tagA', 1, 3], ['tagB', 0, 2]]
+      output =
+        0: ['tagB']
+        1: ['tagA', 'tagB']
+        2: ['tagA', 'tagB']
+        3: ['tagA']
 
-    result = finder.scopeMapFrom(input)
-    expect(JSON.stringify(result)).toBe JSON.stringify(output)
+      result = finder.scopeMapFrom(input)
+      expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
-    input = []
-    output = {}
+      input = []
+      output = {}
 
-    result = finder.scopeMapFrom(input)
-    expect(JSON.stringify(result)).toBe JSON.stringify(output)
+      result = finder.scopeMapFrom(input)
+      expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .css file", ->
     waitsForPromise ->
