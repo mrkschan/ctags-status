@@ -11,8 +11,8 @@ int f2()
 class B {}
 
 class C : public B {
-    private:
-        int method() {
-            return 0;
-        }
+private:
+    int method() {
+        return 0;
+    }
 }

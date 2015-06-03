@@ -53,7 +53,10 @@ findByCloseCurly = (editor, tagstart) ->
       lineindent = editor.indentationForBufferRow i
 
       if lineindent == tagindent && /^{.*/.test(trimmed)
-        # Open curly should not be considered as tag end line
+        # Open curly should not be considered as tag end
+        continue
+      else if /^(public|protected|private):\s*/.test(trimmed)
+        # Inheritance access control should not be considered as tag end
         continue
 
       if /^}/.test(trimmed)
