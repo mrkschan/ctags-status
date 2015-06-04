@@ -1,3 +1,9 @@
+## 1.3.0 - Restructuring
+* Supporting languages using 'end' statement to finish a scope
+* Languages using '}' to end scope now respects indentation as well
+* Supporting C++ inheritance access control statements
+* Restructured the end of scope finder to be language-aware rather than one size fits all
+
 ## 1.2.7 -
 * Ctags now covers 'interface' and 'method'
 
