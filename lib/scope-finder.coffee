@@ -1,7 +1,7 @@
 require 'atom'
 
 
-findByIndentation = (editor, tagstart) ->
+findByIndentation = (editor, tagstart, excludes=[]) ->
     # Guess tag end by assuming both start and end lines use same indent
     lastline = editor.getLastBufferRow()
     tagindent = editor.indentationForBufferRow tagstart
@@ -19,6 +19,14 @@ findByIndentation = (editor, tagstart) ->
         # Blank line should not be considered as tag end line
         continue
 
+      is_excluded = false
+      if lineindent == tagindent
+        for re in excludes when not is_excluded
+          is_excluded = re.test(trimmed)
+
+      if is_excluded
+        continue
+
       lineindent = editor.indentationForBufferRow i
 
       if lineindent <= tagindent
@@ -32,7 +40,7 @@ findByIndentation = (editor, tagstart) ->
     tagend
 
 
-findByCloseCurly = (editor, tagstart) ->
+findByCloseCurly = (editor, tagstart, excludes=[]) ->
     # Guess tag end by assuming end curly use same indent as that of tag
     lastline = editor.getLastBufferRow()
     tagindent = editor.indentationForBufferRow tagstart
@@ -55,8 +63,13 @@ findByCloseCurly = (editor, tagstart) ->
       if lineindent == tagindent && /^{.*/.test(trimmed)
         # Open curly should not be considered as tag end
         continue
-      else if /^(public|protected|private):\s*/.test(trimmed)
-        # Inheritance access control should not be considered as tag end
+
+      is_excluded = false
+      if lineindent == tagindent
+        for re in excludes when not is_excluded
+          is_excluded = re.test(trimmed)
+
+      if is_excluded
         continue
 
       if /^}/.test(trimmed)
@@ -77,7 +90,7 @@ findByCloseCurly = (editor, tagstart) ->
     tagend
 
 
-findByEndStmt = (editor, tagstart) ->
+findByEndStmt = (editor, tagstart, excludes=[]) ->
     # Guess tag end by assuming 'end' statement use same indent as that of tag
     lastline = editor.getLastBufferRow()
     tagindent = editor.indentationForBufferRow tagstart
@@ -97,6 +110,14 @@ findByEndStmt = (editor, tagstart) ->
 
       lineindent = editor.indentationForBufferRow i
 
+      is_excluded = false
+      if lineindent == tagindent
+        for re in excludes when not is_excluded
+          is_excluded = re.test(trimmed)
+
+      if is_excluded
+        continue
+
       if /^end\s*/.test(trimmed)
         if lineindent == tagindent
           ended = true
@@ -115,7 +136,12 @@ findByEndStmt = (editor, tagstart) ->
 tagEndFinders =
   '.c': findByCloseCurly,
   '.coffee': findByCloseCurly,
-  '.cpp': findByCloseCurly,
+  '.cpp': (e, s) ->
+    excludes = [
+      # Inheritance access control should be excluded as tag end
+      /^(public|protected|private):\s*/
+    ]
+    findByCloseCurly(e, s, excludes)
   '.css': findByCloseCurly,
   '.go': findByCloseCurly,
   '.h': findByCloseCurly,
