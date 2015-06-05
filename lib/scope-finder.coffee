@@ -133,18 +133,28 @@ findByEndStmt = (editor, tagstart, excludes=[]) ->
     tagend
 
 
+findCPPClose = (e, s) ->
+  excludes = [
+    # Inheritance access control should be excluded as tag end
+    /^(public|protected|private):\s*/
+  ]
+  findByCloseCurly(e, s, excludes)
+
+
 tagEndFinders =
-  '.c': findByCloseCurly,
+  '.c': findCPPClose,
+  '.cc': findCPPClose,
   '.coffee': findByCloseCurly,
-  '.cpp': (e, s) ->
-    excludes = [
-      # Inheritance access control should be excluded as tag end
-      /^(public|protected|private):\s*/
-    ]
-    findByCloseCurly(e, s, excludes)
+  '.cpp': findCPPClose,
   '.css': findByCloseCurly,
+  '.cxx': findCPPClose,
+  '.c++': findCPPClose,
   '.go': findByCloseCurly,
-  '.h': findByCloseCurly,
+  '.h': findCPPClose,
+  '.hh': findCPPClose,
+  '.hpp': findCPPClose,
+  '.hxx': findCPPClose,
+  '.h++': findCPPClose,
   '.java': findByCloseCurly,
   '.js': findByCloseCurly,
   '.php': findByCloseCurly,
