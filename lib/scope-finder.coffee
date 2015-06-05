@@ -112,6 +112,20 @@ findByEndStmt = (editor, tagstart) ->
     tagend
 
 
+tagEndFinders =
+  '.c': findByCloseCurly,
+  '.coffee': findByCloseCurly,
+  '.cpp': findByCloseCurly,
+  '.css': findByCloseCurly,
+  '.go': findByCloseCurly,
+  '.h': findByCloseCurly,
+  '.java': findByCloseCurly,
+  '.js': findByCloseCurly,
+  '.php': findByCloseCurly,
+  '.rb': findByEndStmt,
+  '.py': findByIndentation,
+
+
 class Finder
   constructor: (editor) ->
     @editor = editor
@@ -122,16 +136,7 @@ class Finder
       @fileext = ''
 
   guessedTagEndFrom: (tagstart) ->
-    findFunc = switch @fileext
-      when '.c', '.coffee', '.cpp', '.css', '.go', '.h', '.java', '.js', '.php'
-        findByCloseCurly
-      when '.rb'
-        findByEndStmt
-      when '.py'
-        findByIndentation
-      else
-        findByIndentation
-
+    findFunc = tagEndFinders[@fileext] || findByIndentation
     tagend = findFunc @editor, tagstart
 
   scopeMapFrom: (tags) ->
