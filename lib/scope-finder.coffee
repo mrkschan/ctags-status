@@ -123,7 +123,7 @@ class Finder
 
   guessedTagEndFrom: (tagstart) ->
     findFunc = switch @fileext
-      when '.coffee', '.cpp', '.css', '.go', '.java', '.js', '.php'
+      when '.c', '.coffee', '.cpp', '.css', '.go', '.h', '.java', '.js', '.php'
         findByCloseCurly
       when '.rb'
         findByEndStmt
