@@ -1,3 +1,6 @@
+## 1.3.1 -
+* Better support of C/C++
+
 ## 1.3.0 - Restructuring
 * Supporting languages using 'end' statement to finish a scope
 * Languages using '}' to end scope now respects indentation as well
