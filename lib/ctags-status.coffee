@@ -188,7 +188,9 @@ module.exports = CtagsStatus =
           # Guess tag's end line
           # I/O: (Tags, Start Line) -> (Tags, Start Line, End Line)
           [tag, tagstart] = info
-          tagend = finder.guessedTagEndFrom tagstart
+          tagindent = editor.indentationForBufferRow tagstart
+          tagend = finder.guessedTagEndFrom tagstart, tagindent
+
           [tag, tagstart, tagend]
 
         tags = (filter(info) for info in tags)

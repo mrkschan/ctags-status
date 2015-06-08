@@ -1,10 +1,9 @@
 require 'atom'
 
 
-findByIndentation = (editor, tagstart, excludes=[]) ->
+findByIndentation = (editor, tagstart, tagindent, excludes=[]) ->
     # Guess tag end by assuming both start and end lines use same indent
     lastline = editor.getLastBufferRow()
-    tagindent = editor.indentationForBufferRow tagstart
 
     ended = false
     tagend = lastline
@@ -40,10 +39,9 @@ findByIndentation = (editor, tagstart, excludes=[]) ->
     tagend
 
 
-findByCloseCurly = (editor, tagstart, excludes=[]) ->
+findByCloseCurly = (editor, tagstart, tagindent, excludes=[]) ->
     # Guess tag end by assuming end curly use same indent as that of tag
     lastline = editor.getLastBufferRow()
-    tagindent = editor.indentationForBufferRow tagstart
 
     ended = false
     tagend = lastline
@@ -90,10 +88,9 @@ findByCloseCurly = (editor, tagstart, excludes=[]) ->
     tagend
 
 
-findByEndStmt = (editor, tagstart, excludes=[]) ->
+findByEndStmt = (editor, tagstart, tagindent, excludes=[]) ->
     # Guess tag end by assuming 'end' statement use same indent as that of tag
     lastline = editor.getLastBufferRow()
-    tagindent = editor.indentationForBufferRow tagstart
 
     ended = false
     tagend = lastline
@@ -133,12 +130,12 @@ findByEndStmt = (editor, tagstart, excludes=[]) ->
     tagend
 
 
-findCPPClose = (e, s) ->
+findCPPClose = (editor, tagstart, tagindent) ->
   excludes = [
     # Inheritance access control should be excluded as tag end
     /^(public|protected|private):\s*/
   ]
-  findByCloseCurly(e, s, excludes)
+  findByCloseCurly(editor, tagstart, tagindent, excludes)
 
 
 tagEndFinders =
@@ -171,9 +168,9 @@ class Finder
     else
       @fileext = ''
 
-  guessedTagEndFrom: (tagstart) ->
+  guessedTagEndFrom: (tagstart, tagindent) ->
     findFunc = tagEndFinders[@fileext] || findByIndentation
-    tagend = findFunc @editor, tagstart
+    tagend = findFunc @editor, tagstart, tagindent
 
   scopeMapFrom: (tags) ->
     map = {}
