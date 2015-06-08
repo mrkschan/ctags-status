@@ -184,17 +184,25 @@ module.exports = CtagsStatus =
 
           [tag, tagstart]
 
-        explode = (info) ->
-          # Guess tag's end line
-          # I/O: (Tags, Start Line) -> (Tags, Start Line, End Line)
+        enrich = (info) ->
+          # Enrich tag info
+          # I/O: (Tags, Start Line) -> (Tags, Start Line, Tag Indent)
           [tag, tagstart] = info
           tagindent = editor.indentationForBufferRow tagstart
+
+          [tag, tagstart, tagindent]
+
+        transform = (info) ->
+          # Guess tag's end line
+          # I/O: (Tags, Start Line, Tag Indent) -> (Tags, Start Line, End Line)
+          [tag, tagstart, tagindent] = info
           tagend = finder.guessedTagEndFrom tagstart, tagindent
 
           [tag, tagstart, tagend]
 
-        tags = (filter(info) for info in tags)
-        tags = (explode(info) for info in tags when info?)
+        tags = (filter(info) for info in tags when info?)
+        tags = (enrich(info) for info in tags when info?)
+        tags = (transform(info) for info in tags when info?)
 
         map = finder.scopeMapFrom tags
 
