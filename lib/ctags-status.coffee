@@ -172,38 +172,44 @@ module.exports = CtagsStatus =
         disposable.dispose()
 
       deferred.promise.then (tags) =>
-        filter = (info) ->
-          # Ignore un-interested tags
-          # I/O: (Tags, Type, Start Line) -> (Tags, Start Line)
-          interested = atom.config.get('ctags-status.ctagsTypes')
-          interested = interested.split(',')
-          [tag, type, tagstart] = info
+        filter = (tags) ->
+          do_ = (info) ->
+            # Ignore un-interested tags
+            # I/O: (Tags, Type, Start Line) -> (Tags, Start Line)
+            interested = atom.config.get('ctags-status.ctagsTypes')
+            interested = interested.split(',')
+            [tag, type, tagstart] = info
 
-          if type not in interested
-            return
+            if type not in interested
+              return
 
-          [tag, tagstart]
+            [tag, tagstart]
 
-        enrich = (info) ->
-          # Enrich tag info
-          # I/O: (Tags, Start Line) -> (Tags, Start Line, Tag Indent)
-          [tag, tagstart] = info
-          tagindent = editor.indentationForBufferRow tagstart
+          (do_(info) for info in tags when info?)
 
-          [tag, tagstart, tagindent]
+        enrich = (tags) ->
+          do_ = (info) ->
+            # Enrich tag info
+            # I/O: (Tags, Start Line) -> (Tags, Start Line, Tag Indent)
+            [tag, tagstart] = info
+            tagindent = editor.indentationForBufferRow tagstart
 
-        transform = (info) ->
-          # Guess tag's end line
-          # I/O: (Tags, Start Line, Tag Indent) -> (Tags, Start Line, End Line)
-          [tag, tagstart, tagindent] = info
-          tagend = finder.guessedTagEndFrom tagstart, tagindent
+            [tag, tagstart, tagindent]
 
-          [tag, tagstart, tagend]
+          (do_(info) for info in tags when info?)
 
-        tags = (filter(info) for info in tags when info?)
-        tags = (enrich(info) for info in tags when info?)
-        tags = (transform(info) for info in tags when info?)
+        transform = (tags) ->
+          do_ = (info) ->
+            # Guess tag's end line
+            # I/O: (Tags, Start Line, Tag Indent) -> (Tags, Start Line, End Line)
+            [tag, tagstart, tagindent] = info
+            tagend = finder.guessedTagEndFrom tagstart, tagindent
 
+            [tag, tagstart, tagend]
+
+          (do_(info) for info in tags when info?)
+
+        tags = transform(enrich(filter(tags)))
         map = finder.scopeMapFrom tags
 
         @cache.set path, map
