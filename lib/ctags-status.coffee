@@ -173,9 +173,10 @@ module.exports = CtagsStatus =
 
       deferred.promise.then (tags) =>
         filter = (tags) ->
+          # Ignore un-interested tags
+          # In: (Tags, Type, Start Line)
+          # Out: (Tags, Start Line)
           do_ = (info) ->
-            # Ignore un-interested tags
-            # I/O: (Tags, Type, Start Line) -> (Tags, Start Line)
             interested = atom.config.get('ctags-status.ctagsTypes')
             interested = interested.split(',')
             [tag, type, tagstart] = info
@@ -188,22 +189,27 @@ module.exports = CtagsStatus =
           (do_(info) for info in tags when info?)
 
         enrich = (tags) ->
+          # Enrich tag info
+          # In: (Tags, Start Line)
+          # Out: (Tags, Start Line, Estimated End Line, Tag Indent)
+          lastline = editor.getLastBufferRow()
+
           do_ = (info) ->
-            # Enrich tag info
-            # I/O: (Tags, Start Line) -> (Tags, Start Line, Tag Indent)
             [tag, tagstart] = info
             tagindent = editor.indentationForBufferRow tagstart
 
-            [tag, tagstart, tagindent]
+            # Set the last line as the default estimated end line of all tags.
+            [tag, tagstart, lastline, tagindent]
 
           (do_(info) for info in tags when info?)
 
         transform = (tags) ->
+          # Guess tag's end line
+          # In: (Tags, Start Line, Estimated End Line, Tag Indent)
+          # Out: (Tags, Start Line, Refined End Line)
           do_ = (info) ->
-            # Guess tag's end line
-            # I/O: (Tags, Start Line, Tag Indent) -> (Tags, Start Line, End Line)
-            [tag, tagstart, tagindent] = info
-            tagend = finder.findScopeEnd tagstart, tagindent
+            [tag, tagstart, tagend, tagindent] = info
+            tagend = finder.findScopeEnd tagstart, tagend, tagindent
 
             [tag, tagstart, tagend]
 

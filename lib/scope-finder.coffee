@@ -1,10 +1,8 @@
 require 'atom'
 
 
-findByIndentation = (editor, tagstart, tagindent, excludes=[]) ->
+findByIndentation = (editor, tagstart, lastline, tagindent, excludes=[]) ->
     # Guess tag end by assuming both start and end lines use same indent
-    lastline = editor.getLastBufferRow()
-
     ended = false
     tagend = lastline
     for i in [tagstart + 1..lastline] when not ended
@@ -39,10 +37,8 @@ findByIndentation = (editor, tagstart, tagindent, excludes=[]) ->
     tagend
 
 
-findByCloseCurly = (editor, tagstart, tagindent, excludes=[]) ->
+findByCloseCurly = (editor, tagstart, lastline, tagindent, excludes=[]) ->
     # Guess tag end by assuming end curly use same indent as that of tag
-    lastline = editor.getLastBufferRow()
-
     ended = false
     tagend = lastline
     for i in [tagstart + 1..lastline] when not ended
@@ -88,10 +84,8 @@ findByCloseCurly = (editor, tagstart, tagindent, excludes=[]) ->
     tagend
 
 
-findByEndStmt = (editor, tagstart, tagindent, excludes=[]) ->
+findByEndStmt = (editor, tagstart, lastline, tagindent, excludes=[]) ->
     # Guess tag end by assuming 'end' statement use same indent as that of tag
-    lastline = editor.getLastBufferRow()
-
     ended = false
     tagend = lastline
     for i in [tagstart + 1..lastline] when not ended
@@ -130,12 +124,12 @@ findByEndStmt = (editor, tagstart, tagindent, excludes=[]) ->
     tagend
 
 
-findCPPClose = (editor, tagstart, tagindent) ->
+findCPPClose = (editor, tagstart, lastline, tagindent) ->
   excludes = [
     # Inheritance access control should be excluded as tag end
     /^(public|protected|private):\s*/
   ]
-  findByCloseCurly(editor, tagstart, tagindent, excludes)
+  findByCloseCurly(editor, tagstart, lastline, tagindent, excludes)
 
 
 tagEndFinders =
@@ -168,9 +162,9 @@ class Finder
     else
       @fileext = ''
 
-  findScopeEnd: (tagstart, tagindent) ->
+  findScopeEnd: (tagstart, tagend_estimate, tagindent) ->
     findFunc = tagEndFinders[@fileext] || findByIndentation
-    tagend = findFunc @editor, tagstart, tagindent
+    tagend = findFunc @editor, tagstart, tagend_estimate, tagindent
 
   scopeMapFrom: (tags) ->
     map = {}
