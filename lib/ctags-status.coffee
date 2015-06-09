@@ -201,7 +201,30 @@ module.exports = CtagsStatus =
             # Set the last line as the default estimated end line of all tags.
             [tag, tagstart, lastline, tagindent]
 
-          (do_(info) for info in tags when info?)
+          tags_ = (do_(info) for info in tags when info?)
+
+          # Estimate scope end line -
+          # Each scope ends right before the start of the next.
+          # Though, outer nested scopes use the end line of the innerest one.
+          # Note: Tags are already sorted in ASC order by start line.
+          lastlines_idx = {}  # lastline of each indent level
+          for idx in [tags_.length-1 .. 1] by -1
+            do (idx) ->
+              [this_tag, this_start, this_end, this_indent] = tags_[idx]
+              [last_tag, last_start, last_end, last_indent] = tags_[idx - 1]
+
+              if not lastlines_idx[this_indent]?
+                lastlines_idx[this_indent] = this_end
+
+              if last_indent < this_indent  # this_tag is wrapped by last_tag.
+                last_end = lastlines_idx[this_indent]
+              else
+                last_end = this_start - 1
+                lastlines_idx[last_indent] = last_end
+
+              tags_[idx - 1] = [last_tag, last_start, last_end, last_indent]
+
+          tags_
 
         transform = (tags) ->
           # Guess tag's end line
