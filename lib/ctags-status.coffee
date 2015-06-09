@@ -203,7 +203,7 @@ module.exports = CtagsStatus =
             # Guess tag's end line
             # I/O: (Tags, Start Line, Tag Indent) -> (Tags, Start Line, End Line)
             [tag, tagstart, tagindent] = info
-            tagend = finder.guessedTagEndFrom tagstart, tagindent
+            tagend = finder.findScopeEnd tagstart, tagindent
 
             [tag, tagstart, tagend]
 

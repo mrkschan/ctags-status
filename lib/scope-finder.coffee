@@ -168,7 +168,7 @@ class Finder
     else
       @fileext = ''
 
-  guessedTagEndFrom: (tagstart, tagindent) ->
+  findScopeEnd: (tagstart, tagindent) ->
     findFunc = tagEndFinders[@fileext] || findByIndentation
     tagend = findFunc @editor, tagstart, tagindent
 

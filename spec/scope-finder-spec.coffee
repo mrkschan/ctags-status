@@ -38,27 +38,27 @@ describe "ScopeFinder", ->
 
         input = 0
         output = 2
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 4
         output = 6
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 8
         output = 10
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 12
         output = 14
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 16
         output = 16
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .js file", ->
@@ -69,47 +69,47 @@ describe "ScopeFinder", ->
 
         input = 0
         output = 2
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 4
         output = 7
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 9
         output = 11
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 13
         output = 16
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 19
         output = 21
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 22
         output = 25
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 29
         output = 31
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 32
         output = 35
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 38
         output = 38
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .py file", ->
@@ -120,22 +120,22 @@ describe "ScopeFinder", ->
 
         input = 0
         output = 4
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 3
         output = 4
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 15
         output = 22
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 18
         output = 20
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .php file", ->
@@ -146,32 +146,32 @@ describe "ScopeFinder", ->
 
         input = 2
         output = 4
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 6
         output = 13
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 9
         output = 12
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 15
         output = 15
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 17
         output = 18
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 20
         output = 27
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .go file", ->
@@ -182,22 +182,22 @@ describe "ScopeFinder", ->
 
         input = 2
         output = 4
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 6
         output = 6
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 8
         output = 10
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 12
         output = 14
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .coffee file", ->
@@ -208,42 +208,42 @@ describe "ScopeFinder", ->
 
         input = 0
         output = 2
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 4
         output = 6
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 8
         output = 9
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 12
         output = 13
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 16
         output = 18
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 17
         output = 18
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 20
         output = 22
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 21
         output = 22
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .cpp file", ->
@@ -254,32 +254,32 @@ describe "ScopeFinder", ->
 
         input = 1
         output = 3
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 5
         output = 5
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 7
         output = 8
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 10
         output = 10
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 12
         output = 17
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 14
         output = 16
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .java file", ->
@@ -290,42 +290,42 @@ describe "ScopeFinder", ->
 
         input = 0
         output = 6
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 1
         output = 3
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 5
         output = 5
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 8
         output = 12
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 9
         output = 9
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 11
         output = 11
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 14
         output = 19
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 15
         output = 18
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
   it "guesses the end of scopes in .rb file", ->
@@ -336,25 +336,25 @@ describe "ScopeFinder", ->
 
         input = 0
         output = 6
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 3
         output = 5
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 8
         output = 10
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 12
         output = 18
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
 
         input = 13
         output = 15
-        result = finder.guessedTagEndFrom(input, indentOf(input))
+        result = finder.findScopeEnd(input, indentOf(input))
         expect(result).toBe output
