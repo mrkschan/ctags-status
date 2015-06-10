@@ -2,126 +2,126 @@ require 'atom'
 
 
 findByIndentation = (editor, tagstart, lastline, tagindent, excludes=[]) ->
-    # Guess tag end by assuming both start and end lines use same indent
-    ended = false
-    tagend = lastline
-    for i in [tagstart + 1..lastline] when not ended
-      text = editor.lineTextForBufferRow i
-      if not text?
-        # Skip when Atom cannot read any line from the Buffer
-        continue
+  # Guess tag end by assuming both start and end lines use same indent
+  ended = false
+  tagend = lastline
+  for i in [tagstart + 1..lastline] when not ended
+    text = editor.lineTextForBufferRow i
+    if not text?
+      # Skip when Atom cannot read any line from the Buffer
+      continue
 
-      trimmed = text.trim()
-      if trimmed == ''
-        # Blank line should not be considered as tag end line
-        continue
+    trimmed = text.trim()
+    if trimmed == ''
+      # Blank line should not be considered as tag end line
+      continue
 
-      is_excluded = false
-      if lineindent == tagindent
-        for re in excludes when not is_excluded
-          is_excluded = re.test(trimmed)
+    is_excluded = false
+    if lineindent == tagindent
+      for re in excludes when not is_excluded
+        is_excluded = re.test(trimmed)
 
-      if is_excluded
-        continue
+    if is_excluded
+      continue
 
-      lineindent = editor.indentationForBufferRow i
+    lineindent = editor.indentationForBufferRow i
 
-      if lineindent <= tagindent
-        ended = true
-        tagend = i - 1
+    if lineindent <= tagindent
+      ended = true
+      tagend = i - 1
 
-    # Strip trailing blank lines
-    while editor.lineTextForBufferRow(tagend).trim() == ''
-      tagend = tagend - 1
+  # Strip trailing blank lines
+  while editor.lineTextForBufferRow(tagend).trim() == ''
+    tagend = tagend - 1
 
-    tagend
+  tagend
 
 
 findByCloseCurly = (editor, tagstart, lastline, tagindent, excludes=[]) ->
-    # Guess tag end by assuming end curly use same indent as that of tag
-    ended = false
-    tagend = lastline
-    for i in [tagstart + 1..lastline] when not ended
-      text = editor.lineTextForBufferRow i
-      if not text?
-        # Skip when Atom cannot read any line from the Buffer
-        continue
+  # Guess tag end by assuming end curly use same indent as that of tag
+  ended = false
+  tagend = lastline
+  for i in [tagstart + 1..lastline] when not ended
+    text = editor.lineTextForBufferRow i
+    if not text?
+      # Skip when Atom cannot read any line from the Buffer
+      continue
 
-      trimmed = text.trim()
-      if trimmed == ''
-        # Blank line should not be considered as tag end line
-        continue
+    trimmed = text.trim()
+    if trimmed == ''
+      # Blank line should not be considered as tag end line
+      continue
 
-      lineindent = editor.indentationForBufferRow i
+    lineindent = editor.indentationForBufferRow i
 
-      if lineindent == tagindent && /^{.*/.test(trimmed)
-        # Open curly should not be considered as tag end
-        continue
+    if lineindent == tagindent && /^{.*/.test(trimmed)
+      # Open curly should not be considered as tag end
+      continue
 
-      is_excluded = false
+    is_excluded = false
+    if lineindent == tagindent
+      for re in excludes when not is_excluded
+        is_excluded = re.test(trimmed)
+
+    if is_excluded
+      continue
+
+    if /^}/.test(trimmed)
       if lineindent == tagindent
-        for re in excludes when not is_excluded
-          is_excluded = re.test(trimmed)
+        ended = true
+        tagend = i  # Belongs to current scope
+      else if lineindent < tagindent
+        ended = true
+        tagend = i - 1  # Belongs to outer scope
+    else if lineindent <= tagindent
+      ended = true
+      tagend = i - 1  # End of scope without seeing close curly
 
-      if is_excluded
-        continue
+  # Strip trailing blank lines
+  while editor.lineTextForBufferRow(tagend).trim() == ''
+    tagend = tagend - 1
 
-      if /^}/.test(trimmed)
-        if lineindent == tagindent
-          ended = true
-          tagend = i  # Belongs to current scope
-        else if lineindent < tagindent
-          ended = true
-          tagend = i - 1  # Belongs to outer scope
-      else if lineindent <= tagindent
-          ended = true
-          tagend = i - 1  # End of scope without seeing close curly
-
-    # Strip trailing blank lines
-    while editor.lineTextForBufferRow(tagend).trim() == ''
-      tagend = tagend - 1
-
-    tagend
+  tagend
 
 
 findByEndStmt = (editor, tagstart, lastline, tagindent, excludes=[]) ->
-    # Guess tag end by assuming 'end' statement use same indent as that of tag
-    ended = false
-    tagend = lastline
-    for i in [tagstart + 1..lastline] when not ended
-      text = editor.lineTextForBufferRow i
-      if not text?
-        # Skip when Atom cannot read any line from the Buffer
-        continue
+  # Guess tag end by assuming 'end' statement use same indent as that of tag
+  ended = false
+  tagend = lastline
+  for i in [tagstart + 1..lastline] when not ended
+    text = editor.lineTextForBufferRow i
+    if not text?
+      # Skip when Atom cannot read any line from the Buffer
+      continue
 
-      trimmed = text.trim()
-      if trimmed == ''
-        # Blank line should not be considered as tag end line
-        continue
+    trimmed = text.trim()
+    if trimmed == ''
+      # Blank line should not be considered as tag end line
+      continue
 
-      lineindent = editor.indentationForBufferRow i
+    lineindent = editor.indentationForBufferRow i
 
-      is_excluded = false
+    is_excluded = false
+    if lineindent == tagindent
+      for re in excludes when not is_excluded
+        is_excluded = re.test(trimmed)
+
+    if is_excluded
+      continue
+
+    if /^end\s*/.test(trimmed)
       if lineindent == tagindent
-        for re in excludes when not is_excluded
-          is_excluded = re.test(trimmed)
+        ended = true
+        tagend = i
+    else if lineindent <= tagindent
+      ended = true
+      tagend = i - 1  # End of scope without seeing end statement
 
-      if is_excluded
-        continue
+  # Strip trailing blank lines
+  while editor.lineTextForBufferRow(tagend).trim() == ''
+    tagend = tagend - 1
 
-      if /^end\s*/.test(trimmed)
-        if lineindent == tagindent
-          ended = true
-          tagend = i
-      else if lineindent <= tagindent
-          ended = true
-          tagend = i - 1  # End of scope without seeing end statement
-
-    # Strip trailing blank lines
-    while editor.lineTextForBufferRow(tagend).trim() == ''
-      tagend = tagend - 1
-
-    tagend
+  tagend
 
 
 findCPPClose = (editor, tagstart, lastline, tagindent) ->
