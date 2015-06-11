@@ -204,7 +204,7 @@ module.exports = CtagsStatus =
           # Find tag's end line
           # In: (Tags, Start Line, Tag Indent)
           # Out: (Tags, Start Line, End Line)
-          finder.makeScopeRanges(tags)
+          finder.makeScopeRanges(finder.estimateScopeRanges(tags))
 
         tags = transform(enrich(filter(tags)))
         map = finder.scopeMapFrom tags
