@@ -191,52 +191,20 @@ module.exports = CtagsStatus =
         enrich = (tags) ->
           # Enrich tag info
           # In: (Tags, Start Line)
-          # Out: (Tags, Start Line, Estimated End Line, Tag Indent)
-          lastline = editor.getLastBufferRow()
-
+          # Out: (Tags, Start Line, Tag Indent)
           do_ = (info) ->
             [tag, tagstart] = info
             tagindent = editor.indentationForBufferRow tagstart
 
-            # Set the last line as the default estimated end line of all tags.
-            [tag, tagstart, lastline, tagindent]
-
-          tags_ = (do_(info) for info in tags when info?)
-
-          # Estimate scope end line -
-          # Each scope ends right before the start of the next.
-          # Though, outer nested scopes use the end line of the innerest one.
-          # Note: Tags are already sorted in ASC order by start line.
-          lastlines_idx = {}  # lastline of each indent level
-          for idx in [tags_.length-1 .. 1] by -1
-            do (idx) ->
-              [this_tag, this_start, this_end, this_indent] = tags_[idx]
-              [last_tag, last_start, last_end, last_indent] = tags_[idx - 1]
-
-              if not lastlines_idx[this_indent]?
-                lastlines_idx[this_indent] = this_end
-
-              if last_indent < this_indent  # this_tag is wrapped by last_tag.
-                last_end = lastlines_idx[this_indent]
-              else
-                last_end = this_start - 1
-                lastlines_idx[last_indent] = last_end
-
-              tags_[idx - 1] = [last_tag, last_start, last_end, last_indent]
-
-          tags_
-
-        transform = (tags) ->
-          # Guess tag's end line
-          # In: (Tags, Start Line, Estimated End Line, Tag Indent)
-          # Out: (Tags, Start Line, Refined End Line)
-          do_ = (info) ->
-            [tag, tagstart, tagend, tagindent] = info
-            tagend = finder.findScopeEnd tagstart, tagend, tagindent
-
-            [tag, tagstart, tagend]
+            [tag, tagstart, tagindent]
 
           (do_(info) for info in tags when info?)
+
+        transform = (tags) ->
+          # Find tag's end line
+          # In: (Tags, Start Line, Tag Indent)
+          # Out: (Tags, Start Line, End Line)
+          finder.makeScopeRanges(tags)
 
         tags = transform(enrich(filter(tags)))
         map = finder.scopeMapFrom tags

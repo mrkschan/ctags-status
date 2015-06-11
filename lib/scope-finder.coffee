@@ -162,6 +162,61 @@ class Finder
     else
       @fileext = ''
 
+  makeScopeRanges: (tags) ->
+    # Return scope ranges by finding end line of each scope.
+    init = (tags_) =>
+      placeholder = @editor.getLastBufferRow()
+
+      do_ = (i) ->
+        [tag, tagstart, tagindent] = i
+        [tag, tagstart, placeholder, tagindent]
+
+      (do_(i) for i in tags_)
+
+    estimate = (tags_) =>
+      # Make estimation by scope position.
+      # Each scope ends right before the start of the next.
+      # Though, outer nested scopes use the end line of its deepest nested one.
+      # Note: Tags should be already sorted in ASC order by start line.
+      lastline = @editor.getLastBufferRow()
+      lastlines_idx = {}  # lastline of each indent level.
+
+      # All indent levels end at the last line before making any estimation.
+      for [..., indent] in tags_
+        lastlines_idx[indent] ?= lastline
+
+      for idx in [tags_.length-1 .. 1] by -1
+        do (idx) ->
+          [last_tag, last_start, last_end, last_indent] = tags_[idx - 1]
+          [this_tag, this_start, this_end, this_indent] = tags_[idx]
+
+          if last_indent < this_indent
+            # this_tag is nested inside last_tag.
+            # last_tag should end at the end line of the deepest nested scope,
+            # which is the line right before the next same indent level tag.
+            last_end = lastlines_idx[last_indent]
+          else
+            # this_tag is starting a scope which is not nested by last_tag.
+            # last_tag should end before this_tag.
+            last_end = this_start - 1
+            lastlines_idx[this_indent] = last_end
+            lastlines_idx[last_indent] = last_end
+
+          tags_[idx - 1] = [last_tag, last_start, last_end, last_indent]
+
+      tags_
+
+    refine = (tags_) =>
+      for idx in [0 .. tags_.length - 1]
+        do (idx) =>
+          [tag, tagstart, tagend, tagindent] = tags_[idx]
+          tagend = @findScopeEnd(tagstart, tagend, tagindent)
+          tags_[idx] = [tag, tagstart, tagend]
+
+      tags_
+
+    refine(estimate(init(tags)))
+
   findScopeEnd: (tagstart, tagend_estimate, tagindent) ->
     findFunc = tagEndFinders[@fileext] || findByIndentation
     tagend = findFunc @editor, tagstart, tagend_estimate, tagindent
