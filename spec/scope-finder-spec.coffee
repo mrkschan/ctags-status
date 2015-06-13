@@ -5,7 +5,7 @@ describe "ScopeFinder", ->
     atom.workspace.open('main.txt').then (editor) ->
       finder = ScopeFinder.on(editor)
 
-      input = [['tag', 1, 3]]
+      input = [{name:'tag', start:1, end:3}]
       output =
         1: ['tag']
         2: ['tag']
@@ -14,7 +14,7 @@ describe "ScopeFinder", ->
       result = finder.scopeMapFrom(input)
       expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
-      input = [['tagA', 1, 3], ['tagB', 0, 2]]
+      input = [{name:'tagA', start:1, end:3}, {name:'tagB', start:0, end:2}]
       output =
         0: ['tagB']
         1: ['tagA', 'tagB']

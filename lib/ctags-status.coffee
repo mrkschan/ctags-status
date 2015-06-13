@@ -174,36 +174,29 @@ module.exports = CtagsStatus =
       deferred.promise.then (tags) =>
         filter = (tags) ->
           # Ignore un-interested tags
-          # In: (Tags, Type, Start Line)
-          # Out: (Tags, Start Line)
-          do_ = (info) ->
+          do_ = (tag) ->
             interested = atom.config.get('ctags-status.ctagsTypes')
             interested = interested.split(',')
-            [tag, type, tagstart] = info
 
-            if type not in interested
-              return
+            if tag.type not in interested
+              return null
 
-            [tag, tagstart]
+            tag
 
-          (do_(info) for info in tags when info?)
+          (do_(i) for i in tags when i?)
 
         enrich = (tags) ->
           # Enrich tag info
-          # In: (Tags, Start Line)
-          # Out: (Tags, Start Line, Tag Indent)
-          do_ = (info) ->
-            [tag, tagstart] = info
-            tagindent = editor.indentationForBufferRow tagstart
+          do_ = (tag) ->
+            tagindent = editor.indentationForBufferRow tag.start
+            tag.indent = tagindent
 
-            [tag, tagstart, tagindent]
+            tag
 
-          (do_(info) for info in tags when info?)
+          (do_(i) for i in tags when i?)
 
         transform = (tags) ->
           # Find tag's end line
-          # In: (Tags, Start Line, Tag Indent)
-          # Out: (Tags, Start Line, End Line)
           finder.makeScopeRanges(finder.estimateScopeRanges(tags))
 
         tags = transform(enrich(filter(tags)))

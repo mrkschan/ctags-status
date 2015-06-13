@@ -6,13 +6,13 @@ class Ctags
     parse = (line) ->
       line = line.trim()
       if line == ''
-        return []
+        return null
 
       # Format: tag_name<TAB>file_name<TAB>ex_cmd;"<TAB>extension_fields
       [lpart, rpart] = line.split ';"\t'
       if not lpart? or not rpart?
         console.warn 'ctags-status: Found malformed ctags output - "#{line}"'
-        return []
+        return null
 
       [tag_name, file_name, pattern...] = lpart.split '\t'
       [tag_type, line_no] = rpart.split '\t'
@@ -21,10 +21,10 @@ class Ctags
       line_no = parseInt line_no, 10
       line_no = line_no - 1  # Use zero based
 
-      [tag_name, tag_type, line_no]
+      (name: tag_name, type: tag_type, start: line_no)
 
     tags = (parse line for line in lines.split '\n')
-    (tag for tag in tags when tag.length > 0)
+    (i for i in tags when i?)
 
   generateTags: (path, callback) ->
     presets = require.resolve('./.ctagsrc')
@@ -37,7 +37,7 @@ class Ctags
 
     stdout = (lines) =>
       tags = @parseTags lines
-      tags.sort((x, y) -> x[2] - y[2])  # Sort line_no by asc order
+      tags.sort((x, y) -> x.start - y.start)  # Sort line_no by asc order
 
       callback tags
 

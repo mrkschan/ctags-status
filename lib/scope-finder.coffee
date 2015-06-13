@@ -170,45 +170,38 @@ class Finder
     lastline = @editor.getLastBufferRow()
     lastlines_idx = {}  # lastline of each indent level.
 
-    # All indent levels end at the last line before making any estimation.
-    for [..., indent] in tags
-      lastlines_idx[indent] ?= lastline
-
-    # Init
-    do_ = (i) ->
-      [tag, tagstart, tagindent] = i
-      [tag, tagstart, lastline, tagindent]
-    tags_ = (do_(i) for i in tags)
+    # All tags end at the last line before making any estimation.
+    for tag in tags
+      tag.end = lastline
+      lastlines_idx[tag.indent] ?= lastline
 
     # Estimate
-    for idx in [tags_.length-1 .. 1] by -1
+    for idx in [tags.length-1 .. 1] by -1
       do (idx) ->
-        [last_tag, last_start, last_end, last_indent] = tags_[idx - 1]
-        [this_tag, this_start, this_end, this_indent] = tags_[idx]
+        last_tag = tags[idx - 1]
+        this_tag = tags[idx]
 
-        if last_indent < this_indent
+        if last_tag.indent < this_tag.indent
           # this_tag is nested inside last_tag.
           # last_tag should end at the end line of the deepest nested scope,
           # which is the line right before the next same indent level tag.
-          last_end = lastlines_idx[last_indent]
+          estimated = lastlines_idx[last_tag.indent]
         else
           # this_tag is starting a scope which is not nested by last_tag.
           # last_tag should end before this_tag.
-          last_end = this_start - 1
-          lastlines_idx[this_indent] = last_end
-          lastlines_idx[last_indent] = last_end
+          estimated = this_tag.start - 1
+          lastlines_idx[this_tag.indent] = estimated
+          lastlines_idx[last_tag.indent] = estimated
 
-        tags_[idx - 1] = [last_tag, last_start, last_end, last_indent]
+        last_tag.end = estimated
 
-    tags_
+    tags
 
   makeScopeRanges: (tags) ->
     # Return scope ranges by finding end line of each scope.
-    for idx in [0 .. tags.length - 1]
-      do (idx) =>
-        [tag, tagstart, tagend, tagindent] = tags[idx]
-        tagend = @findScopeEnd(tagstart, tagend, tagindent)
-        tags[idx] = [tag, tagstart, tagend]
+    for tag in tags
+      do (tag) =>
+        tag.end = @findScopeEnd(tag.start, tag.end, tag.indent)
 
     tags
 
@@ -219,12 +212,11 @@ class Finder
   scopeMapFrom: (tags) ->
     map = {}
 
-    for info in tags  # tags sorted by tagstart ASC
-      [tag, tagstart, tagend] = info
-      for i in [tagstart..tagend]
+    for tag in tags  # tags sorted by start line ASC
+      for i in [tag.start..tag.end]
         if not map[i]?
           map[i] = []
-        map[i].push(tag)
+        map[i].push(tag.name)
 
     map
 
