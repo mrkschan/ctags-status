@@ -30,6 +30,35 @@ describe "ScopeFinder", ->
       result = finder.scopeMapFrom(input)
       expect(JSON.stringify(result)).toBe JSON.stringify(output)
 
+  it "estimates the scope ranges", ->
+    waitsForPromise ->
+      atom.workspace.open('main.py').then (editor) ->
+        finder = ScopeFinder.on(editor)
+
+        input = [
+          {"name":"Klass","type":"class","start":0,"indent":0},
+          {"name":"func","type":"member","start":3,"indent":1},
+          {"name":"Main","type":"class","start":7,"indent":0},
+          {"name":"__init__","type":"member","start":8,"indent":1},
+          {"name":"func","type":"member","start":11,"indent":1},
+          {"name":"decorator","type":"function","start":15,"indent":0},
+          {"name":"wrapped","type":"function","start":18,"indent":1},
+          {"name":"run","type":"function","start":28,"indent":0}
+        ]
+        output = [
+          {"name":"Klass","type":"class","start":0,"indent":0,"end":6},
+          {"name":"func","type":"member","start":3,"indent":1,"end":6},
+          {"name":"Main","type":"class","start":7,"indent":0,"end":14},
+          {"name":"__init__","type":"member","start":8,"indent":1,"end":10},
+          {"name":"func","type":"member","start":11,"indent":1,"end":14},
+          {"name":"decorator","type":"function","start":15,"indent":0,"end":27},
+          {"name":"wrapped","type":"function","start":18,"indent":1,"end":27},
+          {"name":"run","type":"function","start":28,"indent":0,"end":30}
+        ]
+
+        result = finder.estimateScopeRanges(input)
+        expect(JSON.stringify(result)).toBe JSON.stringify(output)
+
   it "guesses the end of scopes in .css file", ->
     waitsForPromise ->
       atom.workspace.open('main.css').then (editor) ->
