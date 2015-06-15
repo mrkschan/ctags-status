@@ -5,12 +5,24 @@ class CtagsStatusView
     @element = document.createElement('div')
     @element.classList.add('ctags-status', 'func-info', 'inline-block')
 
+    @container = document.createElement('div')
+
+    @outer = document.createElement('div')
+    @outer.classList.add('ellipsis', 'reverse-ellipsis')
+    @element.appendChild(@outer)
+    @outer.appendChild(@container)
+
+    # @element.classList.add('reverse-ellipsis')
+    # @element.appendChild(@container)
+
   # Returns an object that can be retrieved when package is activated
   serialize: ->
 
   # Tear down any state and detach
   destroy: ->
     @unmount()
+    @container.remove()
+    @outer.remove()
     @element.remove()
 
   mount: (statusBar, priority) ->
@@ -24,8 +36,8 @@ class CtagsStatusView
     @element
 
   clear: ->
-    while @element.firstChild?
-      @element.removeChild(@element.firstChild)
+    while @container.firstChild?
+      @container.removeChild(@container.firstChild)
 
     @element.classList.add 'blank'
 
@@ -34,4 +46,4 @@ class CtagsStatusView
 
     span = document.createElement('span')
     span.textContent = text
-    @element.appendChild(span)
+    @container.appendChild(span)

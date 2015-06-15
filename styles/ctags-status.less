@@ -4,6 +4,52 @@
 // for a full listing of what's available.
 @import "ui-variables";
 
+/* reverse-ellipsis from http://hugogiraudel.com/2014/12/16/css-riddle-reverse-ellipsis/ */
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reverse-ellipsis {
+  text-overflow: clip;
+  position: relative;
+  background-color: @tool-panel-background-color;
+}
+
+.reverse-ellipsis:before {
+  content: '\02026';
+  position: absolute;
+  z-index: 1;
+  left: -1em;
+  background-color: inherit;
+  padding-left: 1em;
+  margin-left: 0.5em;
+}
+
+.reverse-ellipsis div {
+  min-width: 100%;
+  position: relative;
+  display: inline-block;
+  float: right;
+  overflow: visible;
+  background-color: inherit;
+  text-indent: 0.5em;
+}
+
+.reverse-ellipsis div:before {
+  content: '';
+  position: absolute;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-color: inherit;
+  z-index: 200;
+  left: -.5em;
+}
+
+
+/* Style starts here */
 .ctags-status.func-info {
     &:before {
         content: "[";
@@ -12,6 +58,11 @@
     &:after {
         content: "]";
         margin-left: 1px;
+    }
+
+    .ellipsis {
+      display: inline-block;
+      vertical-align: middle;
     }
 
     span + span {
