@@ -199,15 +199,13 @@ class Finder
 
   makeScopeRanges: (tags) ->
     # Return scope ranges by finding end line of each scope.
+    findTagEnd = tagEndFinders[@fileext] || findByIndentation
+
     for tag in tags
       do (tag) =>
-        tag.end = @findScopeEnd(tag.start, tag.end, tag.indent)
+        tag.end = findTagEnd @editor, tag.start, tag.end, tag.indent
 
     tags
-
-  findScopeEnd: (tagstart, tagend_estimate, tagindent) ->
-    findFunc = tagEndFinders[@fileext] || findByIndentation
-    tagend = findFunc @editor, tagstart, tagend_estimate, tagindent
 
   scopeMapFrom: (tags) ->
     map = {}

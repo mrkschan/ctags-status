@@ -63,336 +63,279 @@ describe "ScopeFinder", ->
     waitsForPromise ->
       atom.workspace.open('main.css').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 0
-        output = 2
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:0},
+                 {start:4},
+                 {start:8},
+                 {start:12},
+                 {start:16},
+                 ]
+        output = [{end:2},
+                  {end:6},
+                  {end:10},
+                  {end:14},
+                  {end:16},
+                  ]
 
-        input = 4
-        output = 6
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 8
-        output = 10
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 12
-        output = 14
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 16
-        output = 16
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .js file", ->
     waitsForPromise ->
       atom.workspace.open('main.js').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 0
-        output = 2
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:0},
+                 {start:4},
+                 {start:9},
+                 {start:13},
+                 {start:19},
+                 {start:22},
+                 {start:29},
+                 {start:32},
+                 {start:38},
+                 ]
+        output = [{end:2},
+                  {end:7},
+                  {end:11},
+                  {end:16},
+                  {end:21},
+                  {end:25},
+                  {end:31},
+                  {end:35},
+                  {end:38},
+                  ]
 
-        input = 4
-        output = 7
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 9
-        output = 11
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 13
-        output = 16
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 19
-        output = 21
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 22
-        output = 25
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 29
-        output = 31
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 32
-        output = 35
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 38
-        output = 38
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .py file", ->
     waitsForPromise ->
       atom.workspace.open('main.py').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 0
-        output = 4
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:0},
+                 {start:3},
+                 {start:15},
+                 {start:18},
+                 ]
+        output = [{end:4},
+                  {end:4},
+                  {end:22},
+                  {end:20},
+                  ]
 
-        input = 3
-        output = 4
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 15
-        output = 22
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 18
-        output = 20
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .php file", ->
     waitsForPromise ->
       atom.workspace.open('main.php').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 2
-        output = 4
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:2},
+                 {start:6},
+                 {start:9},
+                 {start:15},
+                 {start:17},
+                 {start:20},
+                 ]
+        output = [{end:4},
+                  {end:13},
+                  {end:12},
+                  {end:15},
+                  {end:18},
+                  {end:27},
+                  ]
 
-        input = 6
-        output = 13
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 9
-        output = 12
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 15
-        output = 15
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 17
-        output = 18
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 20
-        output = 27
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .go file", ->
     waitsForPromise ->
       atom.workspace.open('main.go').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 2
-        output = 4
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:2},
+                 {start:6},
+                 {start:8},
+                 {start:12},
+                 ]
+        output = [{end:4},
+                  {end:6},
+                  {end:10},
+                  {end:14},
+                  ]
 
-        input = 6
-        output = 6
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 8
-        output = 10
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 12
-        output = 14
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .coffee file", ->
     waitsForPromise ->
       atom.workspace.open('main.coffee').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 0
-        output = 2
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:0},
+                 {start:4},
+                 {start:8},
+                 {start:12},
+                 {start:16},
+                 {start:17},
+                 {start:20},
+                 {start:21},
+                 ]
+        output = [{end:2},
+                  {end:6},
+                  {end:9},
+                  {end:13},
+                  {end:18},
+                  {end:18},
+                  {end:22},
+                  {end:22},
+                  ]
 
-        input = 4
-        output = 6
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 8
-        output = 9
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 12
-        output = 13
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 16
-        output = 18
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 17
-        output = 18
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 20
-        output = 22
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 21
-        output = 22
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .cpp file", ->
     waitsForPromise ->
       atom.workspace.open('main.cpp').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 1
-        output = 3
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:1},
+                 {start:5},
+                 {start:7},
+                 {start:10},
+                 {start:12},
+                 {start:14},
+                 ]
+        output = [{end:3},
+                  {end:5},
+                  {end:8},
+                  {end:10},
+                  {end:17},
+                  {end:16},
+                  ]
 
-        input = 5
-        output = 5
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 7
-        output = 8
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 10
-        output = 10
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 12
-        output = 17
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 14
-        output = 16
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .java file", ->
     waitsForPromise ->
       atom.workspace.open('main.java').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 0
-        output = 6
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:0},
+                 {start:1},
+                 {start:5},
+                 {start:8},
+                 {start:9},
+                 {start:11},
+                 {start:14},
+                 {start:15},
+                 ]
+        output = [{end:6},
+                  {end:3},
+                  {end:5},
+                  {end:12},
+                  {end:9},
+                  {end:11},
+                  {end:19},
+                  {end:18},
+                  ]
 
-        input = 1
-        output = 3
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 5
-        output = 5
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 8
-        output = 12
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 9
-        output = 9
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 11
-        output = 11
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 14
-        output = 19
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 15
-        output = 18
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
   it "guesses the end of scopes in .rb file", ->
     waitsForPromise ->
       atom.workspace.open('main.rb').then (editor) ->
         finder = ScopeFinder.on(editor)
-        lastline = editor.getLastBufferRow()
         indentOf = (n) -> editor.indentationForBufferRow n
 
-        input = 0
-        output = 6
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        lastline = editor.getLastBufferRow()
+        input = [{start:0},
+                 {start:3},
+                 {start:8},
+                 {start:12},
+                 {start:13},
+                 ]
+        output = [{end:6},
+                  {end:5},
+                  {end:10},
+                  {end:18},
+                  {end:15},
+                  ]
 
-        input = 3
-        output = 5
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
 
-        input = 8
-        output = 10
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 12
-        output = 18
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
-
-        input = 13
-        output = 15
-        result = finder.findScopeEnd(input, lastline, indentOf(input))
-        expect(result).toBe output
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)
