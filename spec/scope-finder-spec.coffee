@@ -339,3 +339,37 @@ describe "ScopeFinder", ->
         result = finder.makeScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
+
+  it "guesses the end of scopes in .html file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.html').then (editor) ->
+        finder = ScopeFinder.on(editor)
+        indentOf = (n) -> editor.indentationForBufferRow n
+
+        lastline = editor.getLastBufferRow()
+        input = [{start:0, end:14},
+                 {start:1, end:11},
+                 {start:2, end:7},
+                 {start:3, end:3},
+                 {start:4, end:4},
+                 {start:5, end:7},
+                 {start:8, end:11},
+                 {start:12, end:14},
+                 ]
+        output = [{end:13},
+                  {end:9},
+                  {end:6},
+                  {end:3},
+                  {end:4},
+                  {end:6},
+                  {end:9},
+                  {end:13},
+                  ]
+
+        for i in input
+          do (i) ->
+            i.indent = indentOf i.start
+
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)

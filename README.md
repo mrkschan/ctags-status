@@ -17,6 +17,7 @@ If you like this plugin, leave it a **star** :) If you find any problem, create 
 * Go
 * Java
 * Javascript
+* HTML
 * PHP
 * Python
 * Ruby

@@ -1,6 +1,17 @@
 require 'atom'
 
 
+findByScopePosition = (editor, tagstart, lastline, tagindent, excludes=[]) ->
+  # Guess tag end by using the estimated scope position
+  tagend = lastline
+
+  # Strip trailing blank lines
+  while editor.lineTextForBufferRow(tagend).trim() == ''
+    tagend = tagend - 1
+
+  tagend
+
+
 findByIndentation = (editor, tagstart, lastline, tagindent, excludes=[]) ->
   # Guess tag end by assuming both start and end lines use same indent
   ended = false
@@ -144,6 +155,7 @@ tagEndFinders =
   '.h': findCPPClose,
   '.hh': findCPPClose,
   '.hpp': findCPPClose,
+  '.html': findByScopePosition,
   '.hxx': findCPPClose,
   '.h++': findCPPClose,
   '.java': findByCloseCurly,
