@@ -209,9 +209,14 @@ class Finder
 
     tags
 
-  makeScopeRanges: (tags) ->
+  makeScopeRanges: (tags, use_indentation=true) ->
     # Return scope ranges by finding end line of each scope.
-    findTagEnd = tagEndFinders[@fileext] || findByIndentation
+    if use_indentation
+      defaultFinder = findByIndentation
+    else
+      defaultFinder = findByScopePosition
+
+    findTagEnd = tagEndFinders[@fileext] || defaultFinder
 
     for tag in tags
       do (tag) =>

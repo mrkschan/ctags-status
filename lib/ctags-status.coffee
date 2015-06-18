@@ -20,7 +20,7 @@ module.exports = CtagsStatus =
       type: 'string'
       default: 'class,func,function,member,type,method,interface'
     statusbarPriority:
-      title: 'Statusbar Priority'
+      title: 'Statusbar priority'
       description: 'The priority of the scope name on the status bar.
                     Lower priority leans toward the side.'
       type: 'integer'
@@ -37,6 +37,13 @@ module.exports = CtagsStatus =
       description: 'Show all scope(s) on current line.'
       type: 'boolean'
       default: false
+    useIndentationFinder:
+      title: 'Find scope range by indentation as default'
+      description: 'By default, use indentation to find scope range
+                    for unsupported languages, otherwise use scope position
+                    in the file.'
+      type: 'boolean'
+      default: true
 
 
   activate: (state) ->
@@ -197,7 +204,9 @@ module.exports = CtagsStatus =
 
         transform = (tags) ->
           # Find tag's end line
-          finder.makeScopeRanges(finder.estimateScopeRanges(tags))
+          use_indentation = atom.config.get('ctags-status.useIndentationFinder')
+          tags = finder.estimateScopeRanges(tags)
+          finder.makeScopeRanges(tags, use_indentation)
 
         tags = transform(enrich(filter(tags)))
         map = finder.scopeMapFrom tags
