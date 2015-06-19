@@ -1,3 +1,8 @@
+## 1.3.2 -
+* Provided options to use scope position to find scope range
+* Added basic support of HTML
+* Refactoring work: Tags are always passed to scope finder as a collection
+
 ## 1.3.1 -
 * Better support of C/C++
 
