@@ -155,6 +155,7 @@ tagEndFinders =
   '.h': findCPPClose,
   '.hh': findCPPClose,
   '.hpp': findCPPClose,
+  '.htm': findByScopePosition,
   '.html': findByScopePosition,
   '.hxx': findCPPClose,
   '.h++': findCPPClose,
@@ -163,6 +164,7 @@ tagEndFinders =
   '.php': findByCloseCurly,
   '.rb': findByEndStmt,
   '.py': findByIndentation,
+  '.xhtml': findByScopePosition,
 
 
 class Finder
