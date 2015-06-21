@@ -373,3 +373,34 @@ describe "ScopeFinder", ->
         result = finder.makeScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
+
+  it "guesses the end of scopes in .less file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.less').then (editor) ->
+        finder = ScopeFinder.on(editor)
+        indentOf = (n) -> editor.indentationForBufferRow n
+
+        lastline = editor.getLastBufferRow()
+        input = [{start:0},
+                 {start:3},
+                 {start:5},
+                 {start:8},
+                 {start:14},
+                 {start:16},
+                 ]
+        output = [{end:12},
+                  {end:3},
+                  {end:11},
+                  {end:10},
+                  {end:14},
+                  {end:18},
+                  ]
+
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
+
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)

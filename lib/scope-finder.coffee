@@ -161,6 +161,7 @@ tagEndFinders =
   '.h++': findCPPClose,
   '.java': findByCloseCurly,
   '.js': findByCloseCurly,
+  '.less': findByCloseCurly,
   '.php': findByCloseCurly,
   '.rb': findByEndStmt,
   '.py': findByIndentation,
