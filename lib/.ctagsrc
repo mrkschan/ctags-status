@@ -36,6 +36,7 @@
 
 --regex-Html=/^[ \t]*<([a-zA-Z]+)[ \t]*.*>/\1/f,function/
 --langmap=Html:+.xhtml
+--langmap=Html:+.xml
 
 --langdef=Markdown
 --langmap=Markdown:.md

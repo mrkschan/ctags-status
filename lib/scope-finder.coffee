@@ -166,6 +166,7 @@ tagEndFinders =
   '.rb': findByEndStmt,
   '.py': findByIndentation,
   '.xhtml': findByScopePosition,
+  '.xml': findByScopePosition,
 
 
 class Finder
