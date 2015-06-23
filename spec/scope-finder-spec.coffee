@@ -404,3 +404,36 @@ describe "ScopeFinder", ->
         result = finder.makeScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
+
+  it "guesses the end of scopes in .scss file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.scss').then (editor) ->
+        finder = ScopeFinder.on(editor)
+        indentOf = (n) -> editor.indentationForBufferRow n
+
+        lastline = editor.getLastBufferRow()
+        input = [{start:3},
+                 {start:8},
+                 {start:9},
+                 {start:15},
+                 {start:17},
+                 {start:24},
+                 {start:31},
+                 ]
+        output = [{end:6},
+                  {end:22},
+                  {end:13},
+                  {end:15},
+                  {end:21},
+                  {end:29},
+                  {end:31},
+                  ]
+
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
+
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)

@@ -13,7 +13,7 @@ If you like this plugin, leave it a **star** :) If you find any problem, create 
 
 * C / C++
 * Coffeescript
-* CSS / LESS
+* CSS / LESS / SCSS
 * Go
 * Java
 * Javascript
