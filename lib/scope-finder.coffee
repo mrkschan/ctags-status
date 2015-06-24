@@ -164,6 +164,7 @@ tagEndFinders =
   '.less': findByCloseCurly,
   '.php': findByCloseCurly,
   '.rb': findByEndStmt,
+  '.sass': findByIndentation,
   '.scss': findByCloseCurly,
   '.py': findByIndentation,
   '.xhtml': findByScopePosition,
