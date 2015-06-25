@@ -450,12 +450,16 @@ describe "ScopeFinder", ->
                  {start:8},
                  {start:13},
                  {start:16},
+                 {start:21},
+                 {start:27},
                  ]
         output = [{end:5},
                   {end:19},
                   {end:11},
                   {end:14},
                   {end:19},
+                  {end:25},
+                  {end:28},
                   ]
 
         for i in input
