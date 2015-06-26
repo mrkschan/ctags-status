@@ -470,3 +470,26 @@ describe "ScopeFinder", ->
         result = finder.makeScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
+
+  it "guesses the end of scopes in .pl file", ->
+    waitsForPromise ->
+      atom.workspace.open('main.pl').then (editor) ->
+        finder = ScopeFinder.on(editor)
+        indentOf = (n) -> editor.indentationForBufferRow n
+
+        lastline = editor.getLastBufferRow()
+        input = [{start:2},
+                 {start:6},
+                 ]
+        output = [{end:4},
+                  {end:8},
+                  ]
+
+        for i in input
+          do (i) ->
+            i.end = lastline
+            i.indent = indentOf i.start
+
+        result = finder.makeScopeRanges(input)
+        result_ = ({end:i.end} for i in result)
+        expect(JSON.stringify(result_)).toBe JSON.stringify(output)

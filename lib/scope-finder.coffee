@@ -163,6 +163,7 @@ tagEndFinders =
   '.js': findByCloseCurly,
   '.less': findByCloseCurly,
   '.php': findByCloseCurly,
+  '.pl': findByCloseCurly,
   '.rb': findByEndStmt,
   '.sass': findByIndentation,
   '.scss': findByCloseCurly,

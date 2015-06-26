@@ -19,6 +19,7 @@ If you like this plugin, leave it a **star** :) If you find any problem, create 
 * Javascript
 * HTML / XML
 * PHP
+* Perl
 * Python
 * Ruby
 
