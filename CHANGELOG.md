@@ -1,3 +1,8 @@
+## 1.3.3 -
+* .xhtml and .htm files are recognized as HTML file
+* Start supporting LESS / SCSS / SASS
+* Start basic support of XML and Perl
+
 ## 1.3.2 -
 * Provided options to use scope position to find scope range
 * Added basic support of HTML
