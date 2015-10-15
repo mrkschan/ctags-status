@@ -1,5 +1,7 @@
 # ctags-status package
 
+[![Build Status](https://travis-ci.org/mrkschan/ctags-status.svg?branch=master)](https://travis-ci.org/mrkschan/ctags-status)
+
 Show the class/function/scope name of the current line on the status bar.
 
 ![A screenshot of ctags-status package](https://github.com/mrkschan/ctags-status/blob/master/docs/screenshot.gif?raw=true)
