@@ -1,3 +1,6 @@
+## 1.3.4 -
+* Add support for choosing ctags executable
+
 ## 1.3.3 -
 * .xhtml and .htm files are recognized as HTML file
 * Start supporting LESS / SCSS / SASS
