@@ -29,7 +29,7 @@ class Ctags
   generateTags: (path, callback) ->
     presets = require.resolve('./.ctagsrc')
 
-    command = 'ctags'
+    command = atom.config.get('ctags-status.executablePath')
 
     args = []
     args.push("--options=#{presets}", '--fields=+Kn', '--excmd=p')

@@ -14,6 +14,11 @@ module.exports = CtagsStatus =
   subscriptions: null
 
   config:
+    executablePath:
+      title: 'exuberant-ctags Executable Path'
+      description: 'The path to `ctags` executable'
+      type: 'string'
+      default: 'ctags'
     ctagsTypes:
       title: 'Ctags type(s)'
       description: 'A list of CTags type(s) that could define a scope.'
