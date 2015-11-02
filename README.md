@@ -46,6 +46,8 @@ sudo yum install ctags
 brew install ctags
 ```
 
+And, put `/usr/local/bin/ctags` to your ctags-status settings.
+
 ## Windows
 
 1. Download CTags binary from http://prdownloads.sourceforge.net/ctags/ctags58.zip.
