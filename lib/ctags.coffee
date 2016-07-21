@@ -34,14 +34,15 @@ class Ctags
     args = []
     args.push("--options=#{presets}", '--fields=+Kn', '--excmd=p')
     args.push('-R', '-f', '-', path)
-
+    tags = []
     stdout = (lines) =>
-      tags = @parseTags lines
+      tmp_tags = @parseTags lines
+      tags.push tmp_tags...
       tags.sort((x, y) -> x.start - y.start)  # Sort line_no by asc order
-
+    exit = (exitCode) =>
       callback tags
 
     stderr = (lines) ->
       console.warn lines
 
-    subprocess = new BufferedProcess({command, args, stdout, stderr})
+    subprocess = new BufferedProcess({command, args, stdout, stderr, exit})
