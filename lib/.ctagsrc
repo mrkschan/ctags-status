@@ -79,5 +79,5 @@
 --regex-js=/([^= ]+)[ \t]*=[ \t]*[^"]'[^']*/\1/,string/
 --regex-js=/([^= ]+)[ \t]*=[ \t]*[^']"[^"]*/\1/,string/
 
---regex-perl=/sub\s+([a-zA-Z0-9_]+)/\1/d,function/i
---regex-perl=/package\s+([a-zA-Z0-9_:]+)/\1/d,package/i
+--regex-perl=/sub[ \t]+([a-zA-Z0-9_]+)/\1/d,function/i
+--regex-perl=/package[ \t]+([a-zA-Z0-9_:]+)/\1/d,package/i
