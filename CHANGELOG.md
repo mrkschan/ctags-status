@@ -1,3 +1,7 @@
+## 1.3.5 -
+* Use `[ \t]` instead of `\s` in regexp for Perl (Thanks @triamazikamno)
+* Read the full output of ctags (Thanks @triamazikamno)
+
 ## 1.3.4 -
 * Add support for choosing ctags executable
 
