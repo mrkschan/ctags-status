@@ -138,7 +138,9 @@ findByEndStmt = (editor, tagstart, lastline, tagindent, excludes=[]) ->
 findCPPClose = (editor, tagstart, lastline, tagindent) ->
   excludes = [
     # Inheritance access control should be excluded as tag end
-    /^(public|protected|private):\s*/
+    /^(public|protected|private):\s*/,
+    # Exclude macros starting with '#'
+    /^#/
   ]
   findByCloseCurly(editor, tagstart, lastline, tagindent, excludes)
 

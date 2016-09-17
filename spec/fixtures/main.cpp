@@ -16,3 +16,11 @@ private:
         return 0;
     }
 }
+
+int f3() {
+    int i;
+#ifdef 1
+    i=1
+#endif
+    return 0;
+}
