@@ -1,3 +1,6 @@
+## 1.3.6 -
+* Recognize C/CPP macro
+
 ## 1.3.5 -
 * Use `[ \t]` instead of `\s` in regexp for Perl (Thanks @triamazikamno)
 * Read the full output of ctags (Thanks @triamazikamno)
