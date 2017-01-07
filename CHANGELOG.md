@@ -1,3 +1,6 @@
+## 1.3.7 -
+* Update golang ctags default config
+
 ## 1.3.6 -
 * Recognize C/CPP macro
 
