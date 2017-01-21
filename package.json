@@ -19,10 +19,11 @@
     }
   },
   "keywords": [
-    "ctags",
-    "statusbar",
-    "function",
     "class",
-    "scope"
+    "ctags",
+    "function",
+    "scope",
+    "statusbar",
+    "symbol"
   ]
 }
