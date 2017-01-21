@@ -1,6 +1,6 @@
 {
   "name": "ctags-status",
-  "main": "./lib/ctags-status",
+  "main": "./lib/main",
   "version": "1.3.7",
   "description": "Show the class/function/scope name of the current line on the status bar.",
   "repository": "https://github.com/mrkschan/ctags-status",
