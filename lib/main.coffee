@@ -2,11 +2,11 @@
 
 Q = null
 
-Ctags = null
 CtagsStatusView = null
 
 Cache = null
 Finder = null
+Generator = null
 
 
 module.exports = CtagsStatus =
@@ -54,16 +54,16 @@ module.exports = CtagsStatus =
   activate: (state) ->
     Q ?= require 'q'
 
-    Ctags ?= require './ctags'
     CtagsStatusView ?= require './ctags-status-view'
 
     Cache ?= require './cache'
     Finder ?= require './scope-finder'
+    Generator ?= require './generator'
 
     cache_size = atom.config.get('ctags-status.cacheSize')
 
     @cache = new Cache(cache_size)
-    @ctags = new Ctags
+    @generator = new Generator
     @ctagsStatusView = new CtagsStatusView(state.ctagsStatusViewState)
 
     @subscriptions = new CompositeDisposable
@@ -101,13 +101,16 @@ module.exports = CtagsStatus =
     @cache.clear()
     @cache = null
 
+    @generator.destruct()
+    @generator = null
+
     Q = null
 
-    Ctags = null
     CtagsStatusView = null
 
     Cache = null
     Finder = null
+    Generator = null
 
   serialize: ->
     ctagsStatusViewState: @ctagsStatusView.serialize()
@@ -177,7 +180,7 @@ module.exports = CtagsStatus =
       disposable = editor.getBuffer().onDidDestroy ->
         deferred.reject()
 
-      @ctags.generateTags path, (tags) ->
+      @generator.generateTags path, (tags) ->
         deferred.resolve(tags)
 
       deferred.promise.fin ->
