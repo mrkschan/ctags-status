@@ -12,7 +12,7 @@ class Ctags
       # Format: tag_name<TAB>file_name<TAB>ex_cmd;"<TAB>extension_fields
       [lpart, rpart] = line.split ';"\t'
       if not lpart? or not rpart?
-        console.warn 'ctags-status: Found malformed ctags output - "#{line}"'
+        console.warn "ctags-status: Found malformed ctags output - '#{line}'"
         return null
 
       [tag_name, file_name, pattern...] = lpart.split '\t'
@@ -28,7 +28,7 @@ class Ctags
     (i for i in tags when i?)
 
   generateTags: (path, callback) ->
-    ctagsConfig = require.resolve("./.ctagsrc")
+    ctagsConfig = require.resolve("./ctags-config")
     binRoot = atom.packages.resolvePackagePath("symbols-view")
     binRoot = binRoot.replace("\.asar", ".asar.unpacked")
 
