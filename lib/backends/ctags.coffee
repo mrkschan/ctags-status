@@ -1,4 +1,5 @@
 {BufferedProcess} = require 'atom'
+Path = require 'path'
 
 module.exports =
 class Ctags
@@ -27,19 +28,24 @@ class Ctags
     (i for i in tags when i?)
 
   generateTags: (path, callback) ->
-    presets = require.resolve('./.ctagsrc')
+    ctagsConfig = require.resolve("./.ctagsrc")
+    binRoot = atom.packages.resolvePackagePath("symbols-view")
+    binRoot = binRoot.replace("\.asar", ".asar.unpacked")
 
-    command = atom.config.get('ctags-status.executablePath')
+    custom_command = atom.config.get("ctags-status.executablePath")
+    default_command = Path.join(binRoot, "vendor", "ctags-#{process.platform}")
 
+    command = custom_command || default_command
     args = []
-    args.push("--options=#{presets}", '--fields=+Kn', '--excmd=p')
-    args.push('-R', '-f', '-', path)
+    args.push("--options=#{ctagsConfig}", "--fields=+Kn", "--excmd=p")
+    args.push("-R", "-f", "-", path)
+
     tags = []
     stdout = (lines) =>
       tmp_tags = @parseTags lines
       tags.push tmp_tags...
       tags.sort((x, y) -> x.start - y.start)  # Sort line_no by asc order
-    exit = (exitCode) =>
+    exit = (exitCode) ->
       callback tags
 
     stderr = (lines) ->
