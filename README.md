@@ -26,30 +26,10 @@ Inspired by VIM Tag List plugin. Using Ctags to locate the start of functions / 
 
 # Dependency
 
-## Ubuntu / Debian
-
-```
-sudo apt-get install exuberant-ctags
-```
-
-## Red Hat / Fedora / CentOS
-
-```
-sudo yum install ctags
-```
-
-## OS X
-
-```
-brew install ctags
-```
-
-And, put `/usr/local/bin/ctags` to your ctags-status settings.
-
-## Windows
-
-1. Download CTags binary from http://prdownloads.sourceforge.net/ctags/ctags58.zip.
-2. Unzip the binary to anywhere that can be located by your PATH.
+If [symbols-view](https://atom.io/packages/symbols-view) is installed,
+its vendored ctags binary will be used.
+Otherwise, please install exuberant-ctags manually and
+set the ctags binary path in your ctags-status settings.
 
 
 # How it works
