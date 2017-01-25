@@ -200,6 +200,34 @@ module.exports = CtagsStatus =
 
           (do_(i) for i in tags when i?)
 
+        dedup = (tags) ->
+          # De-duplicate tag that has multiple types.
+          # Keep the one which its name is the shortest.
+          # Note, tags are sorted by start line ASC.
+          # E.g.
+          # "O.func" is a "method" and "func" is a "function" on the same line.
+          # We keep "func".
+          tags = (i for i in tags when i?)
+          uniq = []
+
+          i = 0
+          while i < tags.length
+            thisTag = tags[i]
+            j = i + 1
+
+            while j < tags.length
+              checkTag = tags[j]
+              if thisTag.start != checkTag.start
+                break
+              if thisTag.name.length > checkTag.name.length
+                thisTag = checkTag
+              j += 1
+
+            uniq.push(thisTag)
+            i = j
+
+          uniq
+
         enrich = (tags) ->
           # Enrich tag info
           do_ = (tag) ->
@@ -216,7 +244,7 @@ module.exports = CtagsStatus =
           tags = finder.estimateScopeRanges(tags)
           finder.makeScopeRanges(tags, use_indentation)
 
-        tags = transform(enrich(filter(tags)))
+        tags = transform(enrich(dedup(filter(tags))))
         map = finder.scopeMapFrom tags
 
         @cache.set path, map
