@@ -16,7 +16,7 @@ module.exports = CtagsStatus =
   config:
     executablePath:
       title: 'exuberant-ctags Executable Path'
-      description: 'The path to `ctags` executable'
+      description: 'The path to `ctags` executable, the vendored one of symbols-view package is used by default'
       type: 'string'
       default: ''
     ctagsTypes:
@@ -45,8 +45,8 @@ module.exports = CtagsStatus =
     useIndentationFinder:
       title: 'Find scope range by indentation as default'
       description: 'By default, use indentation to find scope range
-                    for unsupported languages, otherwise use scope position
-                    in the file.'
+                    for unsupported languages. Otherwise, use the position of
+                    the scope in the file to find the range.'
       type: 'boolean'
       default: true
 
