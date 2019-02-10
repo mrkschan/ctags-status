@@ -218,7 +218,7 @@ class Finder
 
     tags
 
-  makeScopeRanges: (tags, use_indentation=true) ->
+  refineScopeRanges: (tags, use_indentation=true) ->
     # Return scope ranges by finding end line of each scope.
     if use_indentation
       defaultFinder = findByIndentation
