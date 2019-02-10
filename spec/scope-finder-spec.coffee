@@ -43,7 +43,8 @@ describe "ScopeFinder", ->
           {"name":"func","type":"member","start":11,"indent":1},
           {"name":"decorator","type":"function","start":15,"indent":0},
           {"name":"wrapped","type":"function","start":18,"indent":1},
-          {"name":"run","type":"function","start":28,"indent":0}
+          {"name":"run","type":"function","start":29,"indent":0},
+          {"name":"linebreak_in_signature","type":"function","start":33,"indent":0}
         ]
         output = [
           {"name":"Klass","type":"class","start":0,"indent":0,"end":6},
@@ -51,9 +52,10 @@ describe "ScopeFinder", ->
           {"name":"Main","type":"class","start":7,"indent":0,"end":14},
           {"name":"__init__","type":"member","start":8,"indent":1,"end":10},
           {"name":"func","type":"member","start":11,"indent":1,"end":14},
-          {"name":"decorator","type":"function","start":15,"indent":0,"end":27},
-          {"name":"wrapped","type":"function","start":18,"indent":1,"end":27},
-          {"name":"run","type":"function","start":28,"indent":0,"end":30}
+          {"name":"decorator","type":"function","start":15,"indent":0,"end":28},
+          {"name":"wrapped","type":"function","start":18,"indent":1,"end":28},
+          {"name":"run","type":"function","start":29,"indent":0,"end":32},
+          {"name":"linebreak_in_signature","type":"function","start":33,"indent":0,"end":37}
         ]
 
         result = finder.estimateScopeRanges(input)
@@ -132,20 +134,25 @@ describe "ScopeFinder", ->
         indentOf = (n) -> editor.indentationForBufferRow n
 
         lastline = editor.getLastBufferRow()
-        input = [{start:0},
+        input = [{start:0, end:6},  # findPythonClose relies on good estimate of scope range since ':' on the new symbol line is considered as the end of current scope
                  {start:3},
                  {start:15},
                  {start:18},
+                 {start:29},
+                 {start:33},
                  ]
         output = [{end:4},
                   {end:4},
                   {end:22},
                   {end:20},
+                  {end:30},
+                  {end:36},
                   ]
 
         for i in input
           do (i) ->
-            i.end = lastline
+            if i.end == undefined
+                i.end = lastline
             i.indent = indentOf i.start
 
         result = finder.refineScopeRanges(input)

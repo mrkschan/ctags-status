@@ -27,6 +27,8 @@ findByIndentation = (editor, tagstart, lastline, tagindent, excludes=[]) ->
       # Blank line should not be considered as tag end line
       continue
 
+    lineindent = editor.indentationForBufferRow i
+
     is_excluded = false
     if lineindent == tagindent
       for re in excludes when not is_excluded
@@ -34,8 +36,6 @@ findByIndentation = (editor, tagstart, lastline, tagindent, excludes=[]) ->
 
     if is_excluded
       continue
-
-    lineindent = editor.indentationForBufferRow i
 
     if lineindent <= tagindent
       ended = true
@@ -135,6 +135,14 @@ findByEndStmt = (editor, tagstart, lastline, tagindent, excludes=[]) ->
   tagend
 
 
+findPythonClose = (editor, tagstart, lastline, tagindent) ->
+    excludes = [
+        # Line ended with colon is always the start of a block
+        /:$/,
+    ]
+    findByIndentation(editor, tagstart, lastline, tagindent, excludes)
+
+
 findCPPClose = (editor, tagstart, lastline, tagindent) ->
   excludes = [
     # Inheritance access control should be excluded as tag end
@@ -169,7 +177,7 @@ tagEndFinders =
   '.rb': findByEndStmt,
   '.sass': findByIndentation,
   '.scss': findByCloseCurly,
-  '.py': findByIndentation,
+  '.py': findPythonClose,
   '.xhtml': findByScopePosition,
   '.xml': findByScopePosition,
 
