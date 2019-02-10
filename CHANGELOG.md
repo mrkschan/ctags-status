@@ -1,3 +1,10 @@
+## 1.4.0 -
+* Better support of Python function signature with line-break
+* Sync ctags config from symbols-view
+* De-duplicate tag that has multiple types
+* Use symbols-view vendored ctags executable as default backend
+* Start moving towards multi-backend support
+
 ## 1.3.7 -
 * Update golang ctags default config
 
