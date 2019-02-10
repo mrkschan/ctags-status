@@ -84,7 +84,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -121,7 +121,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -148,7 +148,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -179,7 +179,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -206,7 +206,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -241,7 +241,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -272,7 +272,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -307,7 +307,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -336,7 +336,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -370,7 +370,7 @@ describe "ScopeFinder", ->
           do (i) ->
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -401,7 +401,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -434,7 +434,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -467,7 +467,7 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)
 
@@ -490,6 +490,6 @@ describe "ScopeFinder", ->
             i.end = lastline
             i.indent = indentOf i.start
 
-        result = finder.makeScopeRanges(input)
+        result = finder.refineScopeRanges(input)
         result_ = ({end:i.end} for i in result)
         expect(JSON.stringify(result_)).toBe JSON.stringify(output)

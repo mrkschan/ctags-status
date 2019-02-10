@@ -242,7 +242,7 @@ module.exports = CtagsStatus =
           # Find tag's end line
           use_indentation = atom.config.get('ctags-status.useIndentationFinder')
           tags = finder.estimateScopeRanges(tags)
-          finder.makeScopeRanges(tags, use_indentation)
+          finder.refineScopeRanges(tags, use_indentation)
 
         tags = transform(enrich(dedup(filter(tags))))
         map = finder.scopeMapFrom tags
