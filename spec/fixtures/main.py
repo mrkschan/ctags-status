@@ -22,9 +22,16 @@ def decorator(func):
 
     return wrapped
 
+
 identity = lambda i: i
 
 
 @decorator
 def run(*a, **k):
     identity(1)
+
+
+def linebreak_in_signature(
+    param
+):
+    identity(param)
