@@ -1,6 +1,7 @@
 # ctags-status package
 
 [![Build Status](https://travis-ci.org/mrkschan/ctags-status.svg?branch=master)](https://travis-ci.org/mrkschan/ctags-status)
+[![Known Vulnerabilities](https://snyk.io/test/github/mrkschan/ctags-status/badge.svg)](https://snyk.io/test/github/mrkschan/ctags-status)
 
 Show the class/function/scope name of the current line on the status bar.
 
